@@ -71,9 +71,9 @@ const studentController = {
             if (!opportunity) {
                 return res.status(404).json({ error: 'Opportunity not found.' });
             }
-
-             // Modify the opportunity data as needed before insertion.
-             const opportunityDetails = {
+    
+            // Modify the opportunity data as needed before insertion.
+            const opportunityDetails = {
                 // Map the opportunity fields to the corresponding student fields
                 // Adjust this mapping according to your data structure
                 _id: opportunity.id,
@@ -93,61 +93,73 @@ const studentController = {
     updateOpportunity: async (req, res) => {
         try {
             // Get the opportunity ID from the route parameters.
-            const opportunityId = req.params.id; // Get the ID from the request body
-     
-            // Find the opportunity in the student model by _id.
-            const existingOpportunity = await studentModel.findById({_id: opportunityId});
-     
-            if (!existingOpportunity) {
-                return res.status(404).json({ error: 'Opportunity not found.' });
+            const opportunityId = req.params.id;
+    
+            // Parse the URL fragment identifier (everything after the # character).
+            const fragment = req.params[0];
+    
+            // Check if the fragment matches the expected pattern, such as "updateOpportunity/{_id}".
+            const fragmentPattern = /^updateOpportunity\/(\w+)$/;
+            const match = fragmentPattern.exec(fragment);
+    
+            if (match) {
+                // Extract the _id from the fragment.
+                const updatedOpportunityId = match[1];
+    
+                if (opportunityId !== updatedOpportunityId) {
+                    return res.status(400).json({ error: 'Opportunity ID in the URL does not match the fragment.' });
+                }
+    
+                // Update the opportunity based on the request body.
+                const updatedOpportunityData = {
+                    date: req.body.date,
+                    time: req.body.time
+                    // Add other fields here if needed
+                };
+    
+                // Update the opportunity in the database using the student model's updateById method.
+                const numUpdated = await studentModel.updateById(opportunityId, updatedOpportunityData);
+    
+                if (numUpdated === 0) {
+                    return res.status(404).json({ error: 'Opportunity not found.' });
+                }
+    
+                // Optionally, you can retrieve the updated opportunity from the database
+                const updatedOpportunity = await studentModel.findById(opportunityId);
+    
+                return res.json({ message: 'Opportunity updated successfully', updatedOpportunity });
+            } else {
+                return res.status(400).json({ error: 'Invalid fragment format.' });
             }
-     
-            // Modify the opportunity data based on the request body.
-            const updatedOpportunityData = {
-                date: req.body.date,
-                time: req.body.time
-                // Add other fields here if needed
-            };
-     
-            // Update the opportunity in the database using the student model's updateById method.
-            const numUpdated = await studentModel.updateById(opportunityId, updatedOpportunityData);
-     
-            if (numUpdated === 0) {
-                return res.status(404).json({ error: 'Opportunity not found.' });
-            }
-     
-            // Optionally, you can retrieve the updated opportunity from the database
-            const updatedOpportunity = await studentModel.findById(opportunityId);
-     
-            res.json({ message: 'Opportunity updated successfully', updatedOpportunity });
         } catch (err) {
             res.status(500).send(err);
         }
-     },
-     
-
+    },
+    
+    
     removeOpportunity: async (req, res) => {
         try {
             // Get the opportunity ID from the route parameter.
             const opportunityId = req.params.id;
-
-            // if (!opportunityId) {
-            //    return res.status(400).json({ error: 'OpportunityId is required.' });
-            // }
-
-            // Delete the opportunity from the students database.
-            const numRemoved = await studentModel.deleteById({_id: opportunityId});
-
+    
+            // Delete the opportunity from the students' database.
+            const numRemoved = await studentModel.deleteOpportunity(opportunityId);
+    
             if (numRemoved === 0) {
                 return res.status(404).json({ error: 'Opportunity not found.' });
             }
-
+    
             const message = `The Opportunity with ID: ${opportunityId} has been removed from 'My Opportunities'`;
-            res.json({ message });
+            
+            // Redirect the user to the "/students/viewOpportunity" page after successful deletion.
+            res.redirect('/students/viewOpportunity');
+    
         } catch (err) {
             res.status(500).send(err);
         }
     }
+    
+    
 
 };
 

@@ -74,9 +74,9 @@ const studentModel = {
         });
     },
 
-    deleteOpportunity: (id) => {
+    deleteOpportunity: (_id) => {
         return new Promise((resolve, reject) => {
-            studentModel.deleteById(id, (err, numRemoved) => {
+            studentModel.remove({ _id: id }, {}, (err, numRemoved) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -84,7 +84,8 @@ const studentModel = {
                 }
             });
         });
-    }
+     }
+     
 
 };
 
