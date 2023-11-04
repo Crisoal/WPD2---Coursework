@@ -139,26 +139,27 @@ const studentController = {
     
     removeOpportunity: async (req, res) => {
         try {
-            // Get the opportunity ID from the route parameter.
-            const opportunityId = req.params.id;
-    
-            // Delete the opportunity from the students' database.
-            const numRemoved = await studentModel.deleteOpportunity(opportunityId);
-    
-            if (numRemoved === 0) {
-                return res.status(404).json({ error: 'Opportunity not found.' });
-            }
-    
-            const message = `The Opportunity with ID: ${opportunityId} has been removed from 'My Opportunities'`;
-            
-            // Redirect the user to the "/students/viewOpportunity" page after successful deletion.
-            res.redirect('/students/viewOpportunity');
-    
+          // Get the opportunity ID from the route parameter.
+          const opportunityId = req.params.id;
+      
+          // Call the remove method from the studentModel.
+          const result = await studentModel.remove({ _id: opportunityId }); // Pass the ID as an object
+      
+          if (result instanceof Error) {
+            // Handle errors returned by the model's remove method.
+            return res.status(500).json({ error: result.message });
+          } else if (typeof result === 'string') {
+            // Successful removal with a message.
+            return res.status(200).json({ message: result });
+          } else {
+            // If the result is not a string or an error, you can assume something went wrong.
+            return res.status(500).json({ error: 'An unexpected error occurred.' });
+          }
         } catch (err) {
-            res.status(500).send(err);
+          res.status(500).json({ error: err.message });
         }
-    }
-    
+      }
+      
     
 
 };
