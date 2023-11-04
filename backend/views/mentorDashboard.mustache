@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mentor Dashboard</title>
+    <!-- Include your CSS files here. -->
+</head>
+<body>
+    <h1>Mentor Dashboard</h1>
+    <h2>Available Opportunities</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Actions</th>
+                <!-- Add more columns as needed. -->
+            </tr>
+        </thead>
+        <tbody>
+            {{#opportunities}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{title}}</td>
+                <td>{{category}}</td>
+                <td>
+                    <a href="/mentors/opportunities/{{id}}/edit">Edit</a>
+                    <a href="/mentors/opportunities/{{id}}/delete">Delete</a>
+                </td>
+                <!-- Add more cells as needed. -->
+            </tr>
+            {{/opportunities}}
+        </tbody>
+    </table>
+    <h2>Add a New Opportunity</h2>
+    <!-- Add your form for adding a new opportunity here. -->
+</body>
+</html>
