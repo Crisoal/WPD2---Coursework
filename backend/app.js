@@ -1,8 +1,10 @@
 // Import the necessary modules.
 const express = require('express');
-
 const bodyParser = require('body-parser');
 const mustacheExpress = require('mustache-express');
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 const Datastore = require('nedb');
 const path = require('path');
 const registerStudentController = require('./controllers/registerStudentController');
@@ -23,6 +25,13 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 // Use body-parser middleware to parse the body of POST requests.
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(express.urlencoded({ extended: true }));
+app.use(session({ secret: '', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./routes')(app, passport);
 
 const methodOverride = require('method-override');
 
