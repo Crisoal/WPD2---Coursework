@@ -74,18 +74,35 @@ const studentModel = {
         });
     },
 
-    deleteOpportunity: (id) => {
-        return new Promise((resolve, reject) => {
-            studentModel.deleteById(id, (err, numRemoved) => {
+    remove: (data) => {
+        return new Promise(async (resolve, reject) => {
+          try {
+            // Extract the opportunity ID from the data object.
+            const opportunityId = data._id;
+      
+            // Check if a record with the given ID exists in the database.
+            const existingRecord = await db.findOne({ _id: opportunityId }); // Corrected this line
+      
+            if (existingRecord) {
+              // Use `db.remove` to remove the existing record.
+              db.remove({ _id: opportunityId }, {}, (err, numRemoved) => { // Corrected this line
                 if (err) {
-                    reject(err);
+                  reject(err);
                 } else {
-                    resolve(numRemoved);
+                  resolve(`Removed ${numRemoved} record(s) with ID ${opportunityId}`);
                 }
-            });
+              });
+            } else {
+              reject('Record with the specified ID does not exist.');
+            }
+          } catch (error) {
+            reject(error);
+          }
         });
-    }
-
+      }
+      
+    
+    
 };
 
 module.exports = studentModel;
