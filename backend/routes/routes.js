@@ -1,50 +1,47 @@
+const express = require('express');
+const router = express.Router();
 const studentController = require('../controllers/studentController');
 const mentorController = require('../controllers/mentorController');
+const authController = require('../controllers/authController');
 
-module.exports = (app, passport) => {
-    app.get('/login', (req, res) => res.render('login'));
+router.get('/login', (req, res) => res.render('login'));
 
-    app.post('/login', passport.authenticate('local', {
-        successRedirect: '/dashboard',
-        failureRedirect: '/login',
-        failureFlash: true
-    }));
+router.post('/login', authController.login);
 
-    app.get('/student/register', (req, res) => res.render('student-registration'));
-    app.post('/student/register', studentController.register);
+router.get('/register-student', (req, res) => res.render('registerStudent'));
+router.post('/student-register', authController.registerStudent);
 
-    app.get('/mentor/register', (req, res) => res.render('mentor-registration'));
-    app.post('/mentor/register', mentorController.register);
+router.get('/register-mentor', (req, res) => res.render('registerMentor'));
+router.post('/mentor-register', authController.registerMentor);
 
-    app.get('/dashboard', isAuthenticated, (req, res) => {
-        switch (req.user.role) {
-            case 'student':
-                return res.render('student-dashboard', { user: req.user });
-            case 'mentor':
-                return res.render('mentor-dashboard', { user: req.user });
-            case 'admin':
-                return res.render('admin-dashboard', { user: req.user });
-            default:
-                return res.redirect('/login');
-        }
-    });
+router.get('/dashboard', isAuthenticated, (req, res) => {
+    switch (req.user.role) {
+        case 'student':
+            return res.render('studentDashboard', { user: req.user });
+        case 'mentor':
+            return res.render('mentorDashboard', { user: req.user });
+        case 'admin':
+            return res.render('adminDashboard', { user: req.user });
+        default:
+            return res.redirect('/login');
+    }
+});
 
-    app.get('/logout', (req, res) => {
-        req.logout();
-        res.redirect('/login');
-    });
+router.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/login');
+});
 
-    // Handle 404 - Not Found
-    app.use((req, res, next) => {
-        res.status(404).render('error', { message: 'Page not found.' });
-    });
+// Handle 404 - Not Found
+router.use((req, res, next) => {
+    res.status(404).render('error', { message: 'Page not found.' });
+});
 
-    // Handle 500 - Internal Server Error
-    app.use((err, req, res, next) => {
-        console.error(err.stack);
-        res.status(500).render('error', { message: 'Internal Server Error.' });
-    });
-};
+// Handle 500 - Internal Server Error
+router.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).render('error', { message: 'Internal Server Error.' });
+});
 
 function isAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -52,3 +49,5 @@ function isAuthenticated(req, res, next) {
     }
     res.redirect('/login');
 }
+
+module.exports = router;

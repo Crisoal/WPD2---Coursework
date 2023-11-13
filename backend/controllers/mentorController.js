@@ -1,4 +1,5 @@
 const mentorModel = require('../models/mentorModel');
+const User = require('../models/user');
 
 // Define the mentor controller.
 const mentorController = {
@@ -59,7 +60,7 @@ const mentorController = {
                 res.redirect('/mentors/dashboard');
             }
         });
-    }
+    },
 };
 
 module.exports = mentorController;

@@ -1,19 +1,46 @@
-const Datastore = require('nedb-promises');
-const bcrypt = require('bcryptjs');
+// ../models/user.js
+const Datastore = require('nedb');
+const path = require('path');
 
-const db = Datastore.create('database.db');
+const dbPath = path.resolve(__dirname, '../db/users.db');
 
-class User {
-    constructor(username, email, password, role) {
-        this.username = username.trim();
-        this.email = email.trim().toLowerCase(); // Normalize email
-        this.password = bcrypt.hashSync(password, 10);
-        this.role = role.trim().toLowerCase(); // Normalize role
-    }
+const db = new Datastore({ filename: dbPath, autoload: true });
 
-    validatePassword(password) {
-        return bcrypt.compareSync(password, this.password);
-    }
-}
+const User = {
+  findOne: function (query) {
+    return new Promise((resolve, reject) => {
+      db.findOne(query, (err, doc) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(doc);
+        }
+      });
+    });
+  },
+  findByEmail: function (email) {
+    return new Promise((resolve, reject) => {
+      db.findOne({ email: email }, (err, doc) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(doc);
+        }
+      });
+    });
+  },
+  insert: function (user) {
+    return new Promise((resolve, reject) => {
+      db.insert(user, (err, doc) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(doc);
+        }
+      });
+    });
+  },
+  // Add other methods as needed
+};
 
-module.exports = db.model('User', User);
+module.exports = User;

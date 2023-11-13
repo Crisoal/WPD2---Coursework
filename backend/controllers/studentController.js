@@ -1,5 +1,6 @@
+const User = require('../models/user');
 const studentModel = require('../models/studentModel');
-const opportunityModel = require('../models/opportunityModel'); // Import the opportunity model
+const opportunityModel = require('../models/opportunityModel');
 
 const studentController = {
     addOpportunity: async (req, res) => {
