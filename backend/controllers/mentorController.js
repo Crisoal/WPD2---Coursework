@@ -1,65 +1,92 @@
 const mentorModel = require('../models/mentorModel');
 const User = require('../models/user');
 
-// Define the mentor controller.
 const mentorController = {
-    // Function to get the mentor dashboard.
-    getDashboard: (req, res) => {
-        mentorModel.getAll((err, mentors) => {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.render('mentorDashboard', { mentors: mentors });
+    getDashboard: async (req, res) => {
+        try {
+            const user = req.user; // Assuming user is logged in
+            const mentorUser = await User.findByEmail(user.email);
+
+            if (!mentorUser) {
+                return res.status(404).json({ error: 'Mentor not found.' });
             }
-        });
+
+            // Retrieve mentor-specific data based on the logged-in user
+            const mentorData = await mentorModel.findById(mentorUser._id);
+
+            if (!mentorData) {
+                return res.status(404).json({ error: 'Mentor data not found.' });
+            }
+
+            // Render the mentor dashboard with mentor-specific data
+            res.render('mentorDashboard', { mentorData });
+        } catch (err) {
+            res.status(500).send(err);
+        }
     },
 
-    // Function to get the mentor's coaching opportunities.
-    getOpportunities: (req, res) => {
-        mentorModel.getAll((err, mentors) => {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.render('viewCoachingOpportunities', { mentors: mentors });
+    getOpportunities: async (req, res) => {
+        try {
+            const user = req.user; // Assuming user is logged in
+            const mentorUser = await User.findByEmail(user.email);
+
+            if (!mentorUser) {
+                return res.status(404).json({ error: 'Mentor not found.' });
             }
-        });
+
+            // Retrieve mentor-specific data, including coaching opportunities
+            const mentorData = await mentorModel.findById(mentorUser._id);
+
+            if (!mentorData) {
+                return res.status(404).json({ error: 'Mentor data not found.' });
+            }
+
+            // Render the view with mentor-specific data
+            res.render('viewCoachingOpportunities', { mentorData });
+        } catch (err) {
+            res.status(500).send(err);
+        }
     },
 
-    // Function to add a new coaching opportunity.
-    addOpportunity: (req, res) => {
-        const newOpportunity = req.body;
-        mentorModel.add(newOpportunity, (err, mentor) => {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.redirect('/mentors/dashboard');
+    addOpportunity: async (req, res) => {
+        try {
+            const user = req.user; // Assuming user is logged in
+            const mentorUser = await User.findByEmail(user.email);
+
+            if (!mentorUser) {
+                return res.status(404).json({ error: 'Mentor not found.' });
             }
-        });
+
+            const newOpportunity = req.body;
+            const mentorData = await mentorModel.addOpportunity(mentorUser._id, newOpportunity);
+
+            res.redirect('/mentors/dashboard');
+        } catch (err) {
+            res.status(500).send(err);
+        }
     },
 
-    // Function to modify a coaching opportunity.
-    modifyOpportunity: (req, res) => {
-        const id = req.params.id;
-        const updatedOpportunity = req.body;
-        mentorModel.update(id, updatedOpportunity, (err, mentor) => {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.redirect('/mentors/dashboard');
-            }
-        });
+    modifyOpportunity: async (req, res) => {
+        try {
+            const id = req.params.id;
+            const updatedOpportunity = req.body;
+            const mentorData = await mentorModel.updateOpportunity(id, updatedOpportunity);
+
+            res.redirect('/mentors/dashboard');
+        } catch (err) {
+            res.status(500).send(err);
+        }
     },
 
-    // Function to remove a coaching opportunity.
-    deleteOpportunity: (req, res) => {
-        const id = req.params.id;
-        mentorModel.delete(id, (err) => {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.redirect('/mentors/dashboard');
-            }
-        });
+    deleteOpportunity: async (req, res) => {
+        try {
+            const id = req.params.id;
+            const mentorData = await mentorModel.deleteOpportunity(id);
+
+            res.redirect('/mentors/dashboard');
+        } catch (err) {
+            res.status(500).send(err);
+        }
     },
 };
 

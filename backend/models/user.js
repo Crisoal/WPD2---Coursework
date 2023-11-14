@@ -29,6 +29,32 @@ const User = {
       });
     });
   },
+  
+  findByUsernameOrEmail: function (usernameOrEmail) {
+    return new Promise((resolve, reject) => {
+      if (!usernameOrEmail) {
+        // If usernameOrEmail is empty or null, reject with an error
+        reject(new Error('Username or email is required.'));
+        return;
+      }
+
+      db.findOne(
+        {
+          $or: [
+            { email: usernameOrEmail },
+            { username: usernameOrEmail }
+          ]
+        },
+        (err, doc) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(doc);
+          }
+        }
+      );
+    });
+  },
   insert: function (user) {
     return new Promise((resolve, reject) => {
       db.insert(user, (err, doc) => {

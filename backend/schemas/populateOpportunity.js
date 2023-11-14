@@ -1,5 +1,5 @@
 const Datastore = require('nedb');
-const db = new Datastore({ filename: 'C:/WPD2 - Coursework/backend/db/opportunities.db', autoload: true });
+const db = new Datastore({ filename: '../db/opportunities.db', autoload: true });
 
 // Define your categories and opportunities data
 const categories = [

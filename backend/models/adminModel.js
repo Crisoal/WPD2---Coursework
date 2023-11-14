@@ -1,7 +1,7 @@
 const Datastore = require('nedb');
 
 // Initialize the database.
-const db = new Datastore({ filename: 'db/admins.db', autoload: true, lock: true });
+const db = new Datastore({ filename: '../db/admins.db', autoload: true, lock: true });
 
 // Define the admin model.
 const adminModel = {

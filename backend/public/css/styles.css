@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+    background-color: #f5f5f5;
+}
+
+header .navbar-expand-lg .navbar-collapse{
+        display: block !important;
+}
+
+header nav ul .nav-link{
+    font-size: 13px;
+    font-family: 'Raleway', sans-serif;
+} 
+
+header nav ul .nav-item{
+    margin-inline: 5px;
+}
+
+#bg {
+    position: relative;
+    height: 80vh; /* Set your desired height */
+    overflow: hidden; /* Hide any overflowing content */  
+    background-color: rgba(0, 0, 0, 0.466); 
+}
+
+#bg video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Maintain video aspect ratio and cover the container */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#bg .container {
+    position: absolute;
+    top: 50%; /* Adjust this value to vertically center the container */
+    left: 10%; /* Adjust this value to move the container towards the left */
+    transform: translate(-10%, -50%); /* Center the container horizontally and vertically */
+    z-index: 1;
+    width: 50%;
+}
+
+#bg #overlay-content {
+    text-align: left;
+    padding: 20px;
+    color: #fff;
+}
+
+#bg #overlay-content h2{
+    font-weight: bolder;
+    color: #F8998D;
+    padding-bottom: 10px;
+}
+
+#bg #overlay-content p{
+    font-weight: 500;
+}

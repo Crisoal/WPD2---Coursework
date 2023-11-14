@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const studentController = require('../controllers/studentController');
-const mentorController = require('../controllers/mentorController');
 const authController = require('../controllers/authController');
 
 router.get('/login', (req, res) => res.render('login'));
@@ -13,6 +12,10 @@ router.post('/student-register', authController.registerStudent);
 
 router.get('/register-mentor', (req, res) => res.render('registerMentor'));
 router.post('/mentor-register', authController.registerMentor);
+
+// Student routes
+// router.get('/dashboard', authController.ensureAuthenticated, studentController.createDashboard);
+// router.get('/dashboard/:id', authController.ensureAuthenticated, studentController.getDashboard);
 
 router.get('/dashboard', isAuthenticated, (req, res) => {
     switch (req.user.role) {
