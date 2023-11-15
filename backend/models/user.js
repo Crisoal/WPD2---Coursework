@@ -18,6 +18,17 @@ const User = {
       });
     });
   },
+  findById: function (id) {
+    return new Promise((resolve, reject) => {
+      db.findOne({ _id: id }, (err, doc) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(doc);
+        }
+      });
+    });
+  },
   findByEmail: function (email) {
     return new Promise((resolve, reject) => {
       db.findOne({ email: email }, (err, doc) => {
@@ -29,7 +40,7 @@ const User = {
       });
     });
   },
-  
+
   findByUsernameOrEmail: function (usernameOrEmail) {
     return new Promise((resolve, reject) => {
       if (!usernameOrEmail) {

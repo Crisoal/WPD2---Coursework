@@ -39,7 +39,7 @@
           <a class="nav-link" href="/students">Opportunities</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/students/viewOpportunity">My Opportunities</a>
+          <a class="nav-link" href="/students/user/{{user_id}}/viewOpportunity">My Opportunities</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Projects</a>
@@ -124,6 +124,7 @@
 </nav>
 <!-- Navbar -->
 
+{{#student}}
 <div class="container">
    {{#categories}}
    <h4>{{name}}</h4>
@@ -149,8 +150,7 @@
                    </div>
                    <div class="modal-body">
                        <p>{{description}}</p>
-                       <!-- Add Opportunity Button -->
-                       <a href="/students/addOpportunity/{{_id}}" class="btn btn-primary">Add Opportunity</a>
+                       <a href="/students/user/{{user_id}}/addOpportunity/{{_id}}" class="btn btn-primary">Add Opportunity</a>
                    </div>
                 
                </div>
@@ -162,6 +162,7 @@
    {{/categories}}
 
    </div>
+   {{/student}}
 
    <script>
        document.addEventListener("DOMContentLoaded", function() {

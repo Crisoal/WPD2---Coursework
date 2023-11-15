@@ -1,5 +1,5 @@
-const User = require('../models/user');
 const studentModel = require('../models/studentModel');
+const { studentsDB, validateAndInsert } = require('../schemas/student-schema');
 const opportunityModel = require('../models/opportunityModel');
 
 // Assuming you have a render function, adjust this based on your templating engine
@@ -8,69 +8,157 @@ const render = (res, view, data) => {
 };
 
 const studentController = {
+    // createDashboard: async (user_id) => {
+    //     try {
+    //       // Find the student in the studentsDB by user_id
+    //       const student = await studentsDB.findOne({ user_id });
+
+    //       if (!student) {
+    //         console.error('Student not found with user_id:', user_id);
+    //         // Handle the error as needed
+    //         return null;
+    //       }
+
+    //       // Perform logic to organize the student dashboard data with opportunities
+    //       const categories = await opportunityModel.find({ type: 'category' });
+    //       const opportunities = await opportunityModel.find({ type: 'opportunity' });
+
+    //       categories.forEach(category => {
+    //         category.opportunities = opportunities.filter(opportunity => opportunity.category_id === category.category_id);
+    //       });
+
+    //       // Return the organized data instead of rendering
+    //       return { student, categories };
+    //     } catch (err) {
+    //       console.error('Error creating dashboard data:', err);
+    //       // Handle the error as needed
+    //       return null;
+    //     }
+    //   },
+
+    getDashboard: async (user_id, res) => {
+        try {
+            // Find the student in the studentsDB by user_id
+            const student = await studentsDB.findOne({ user_id });
+
+            if (!student) {
+                console.error('Student not found with user_id:', user_id);
+                // Handle the error as needed
+                return null;
+            }
+
+            // Perform logic to organize the student dashboard data with opportunities
+            const categories = await opportunityModel.find({ type: 'category' });
+            const opportunities = await opportunityModel.find({ type: 'opportunity' });
+
+            categories.forEach(category => {
+                category.opportunities = opportunities.filter(opportunity => opportunity.category_id === category.category_id);
+            });
+
+            // Render the studentDashboard.mustache template
+            res.render('studentDashboard', { student, categories, user_id: student.query.user_id });
+
+            console.log(user_id);
+
+            // You can also return some data if needed
+            return { student, categories };
+        } catch (err) {
+            console.error('Error creating dashboard data:', err);
+            // Handle the error as needed
+            return null;
+        }
+    },
+
     addOpportunity: async (req, res) => {
         try {
-            // Get the opportunity ID from the route parameter.
-            const opportunityId = req.params.id;
-
+            // Extract route parameters
+            const { user_id, id: opportunityId } = req.params;
+    
+            // Find the student in the studentsDB by user_id
+            let studentData = await studentModel.findByUserId(user_id);
+    
+            console.log("Student Data:", studentData);
+    
+            if (!opportunityId) {
+                return res.status(400).json({ error: 'OpportunityId is required.' });
+            }
+    
             // Find the opportunity in the opportunity model by _id.
             const opportunity = await opportunityModel.findOne({ _id: opportunityId });
-
+    
+            console.log(opportunity);
+    
             if (!opportunity) {
                 return res.status(404).json({ error: 'Opportunity not found.' });
             }
-
-            // Check if the opportunity is already in the student's opportunities list
-            const studentId = req.user._id; // Assuming user object has _id field
-            const student = await studentModel.findOne({ _id: studentId });
-
-            console.log(student);
-
-            if (!student) {
+    
+            // Ensure that studentData.opportunities is initialized as an array
+            if (!studentData) {
+                // If the student doesn't exist, handle it appropriately (e.g., return an error)
                 return res.status(404).json({ error: 'Student not found.' });
             }
-
-            const alreadyAdded = student.opportunities.some(opp => opp._id === opportunity._id);
-
-            if (alreadyAdded) {
-                return res.status(400).json({ error: 'Opportunity already added.' });
+    
+            if (!studentData.opportunities) {
+                studentData.opportunities = [];
             }
-
-            // Add the opportunity to the student's opportunities list
-            student.opportunities.push({
-                _id: opportunity._id,
-                title: opportunity.title,
-                description: opportunity.description,
-                date: opportunity.date,
-                time: opportunity.time,
-            });
-
-            // Save the updated student document
-            await student.save();
-
-            // Assuming you have a render function and a studentMyOpportunity.mustache template
-            render(res, 'studentMyOpportunity', { opportunities: student.opportunities });
-        } catch (err) {
-            res.status(500).send(err);
+    
+            // Check if the opportunity is already added for the student
+            const existingOpportunity = studentData.opportunities.find(
+                (opp) => opp._id.toString() === opportunity._id.toString()
+            );
+    
+            if (!existingOpportunity) {
+                // Add the opportunity to the student's opportunities list
+                studentData.opportunities.push({
+                    _id: opportunity._id,
+                    title: opportunity.title,
+                    description: opportunity.description,
+                    date: opportunity.date,
+                    time: opportunity.time,
+                });
+    
+                // Update the student data in the database
+                try {
+                    await studentModel.updateStudent(studentData._id, { opportunities: studentData.opportunities });
+                    res.status(200).json({ message: 'Opportunity added successfully.' });
+                } catch (error) {
+                    console.error('Error updating student:', error);
+                    res.status(500).json({ error: 'Internal server error.' });
+                }
+            } else {
+                res.status(400).json({ error: 'Opportunity already added for the student.' });
+            }
+        } catch (error) {
+            console.error('Error in addOpportunity:', error);
+            res.status(500).json({ error: 'Internal server error.' });
         }
     },
 
     viewOpportunities: async (req, res) => {
         try {
-            // Use the findAll method from the studentModel to retrieve all opportunities in the database.
-            const allOpportunities = await studentModel.findAll();
-
-            // Check if there are any opportunities in the database.
-            if (allOpportunities.length === 0) {
-                return res.status(404).json({ error: 'No opportunities found in the database.' });
-            }
-
-            // Assuming you have a render function and a studentMyOpportunity.mustache template
-            render(res, 'studentMyOpportunity', { opportunities: allOpportunities });
+          // Extract the user_id from route parameters
+          const { user_id } = req.params;
+    
+          // Find the student in the studentsDB by user_id
+          const studentData = await studentModel.findByUserId(user_id);
+    
+          // Check if the student with the specified user_id exists
+          if (!studentData) {
+            return res.status(404).json({ error: 'Student not found.' });
+          }
+    
+          // Check if the student has any opportunities
+          if (!studentData.opportunities || studentData.opportunities.length === 0) {
+            return res.status(404).json({ error: 'No opportunities found for the student.' });
+          }
+    
+          // Assuming you have a render function and a studentMyOpportunity.mustache template
+          render(res, 'studentMyOpportunity', { opportunities: studentData.opportunities });
         } catch (err) {
-            res.status(500).send(err);
+          console.error('Error in viewOpportunities:', err);
+          res.status(500).json({ error: 'Internal server error.' });
         }
-    },
+      },
 
     opportunityDetails: async (req, res) => {
         try {
@@ -170,44 +258,7 @@ const studentController = {
         } catch (err) {
             res.status(500).json({ error: err.message });
         }
-    },
-
-    createDashboard: async (studentEmail) => {
-        try {
-            const student = await studentModel.findByEmail(studentEmail);
-
-            if (!student) {
-                console.error('Student not found.');
-                // Handle the error or redirect as needed
-                return;
-            }
-
-            // Assuming you have a render function and a studentDashboard.mustache template
-            render(res, 'studentDashboard', { student });
-        } catch (err) {
-            console.error('Error creating dashboard:', err);
-            // Handle the error or redirect as needed
-        }
-    },
-
-    getDashboard: async (req, res) => {
-        try {
-          // Perform logic to render the student dashboard with opportunities data
-          const student = req.user; // Assuming user object is available after authentication
-          const categories = await opportunityModel.find({ type: 'category' });
-          const opportunities = await opportunityModel.find({ type: 'opportunity' });
-    
-          categories.forEach(category => {
-            category.opportunities = opportunities.filter(opportunity => opportunity.category_id === category.category_id);
-          });
-    
-          // Assuming you have a render function and a studentDashboard.mustache template
-          render(res, 'studentDashboard', { student, categories });
-        } catch (err) {
-          console.error('Error rendering dashboard:', err);
-          // Handle the error or redirect as needed
-        }
-      },
+    }
 };
 
 module.exports = studentController;

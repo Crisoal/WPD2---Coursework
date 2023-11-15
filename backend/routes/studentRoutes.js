@@ -15,10 +15,10 @@ router.get('/', opportunityController.getOpportunities);
 // router.get('/myOpportunities', studentController.viewOpportunities);
 
 
-// Define a route to add an opportunity to the students' database.
-router.get('/addOpportunity/:id', studentController.addOpportunity);
+router.get('/user/:user_id/addOpportunity/:id', studentController.addOpportunity);
 
-router.get('/viewOpportunity', studentController.viewOpportunities);
+
+router.get('/user/:user_id/viewOpportunity', studentController.viewOpportunities);
 
 router.get('/opportunityDetails/:id', studentController.opportunityDetails);
 

@@ -1,16 +1,12 @@
-const studentsDB = require('../schemas/student-schema');
+const { studentsDB, validateAndInsert } = require('../schemas/student-schema');
 
 const studentModel = {
   insert: (data) => {
     return new Promise(async (resolve, reject) => {
       try {
-        studentsDB.insert(data, (err, newDoc) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(newDoc);
-          }
-        });
+        // Use the validation function to validate and insert data
+        const result = await validateAndInsert(data);
+        resolve(result);
       } catch (error) {
         reject(error);
       }
@@ -53,6 +49,18 @@ const studentModel = {
     });
   },
 
+  findByUserId: (user_id) => {
+    return new Promise((resolve, reject) => {
+      studentsDB.findOne({ user_id: user_id }, (err, doc) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(doc);
+        }
+      });
+    });
+  },
+
   findByEmail: (email) => {
     return new Promise((resolve, reject) => {
       studentsDB.findOne({ email: email }, (err, doc) => {
@@ -62,6 +70,17 @@ const studentModel = {
           resolve(doc);
         }
       });
+    });
+  },
+
+  updateStudent: async (id, updatedData) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const numReplaced = await studentsDB.update({ _id: id }, { $set: updatedData }, {});
+        resolve(numReplaced);
+      } catch (error) {
+        reject(error);
+      }
     });
   },
 
@@ -75,6 +94,7 @@ const studentModel = {
         }
       });
     });
+
   },
 
   remove: (data) => {

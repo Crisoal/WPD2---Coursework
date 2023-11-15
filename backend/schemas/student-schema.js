@@ -1,39 +1,58 @@
 const Datastore = require('nedb');
+const Joi = require('joi');
 
 // Create a new instance of the datastore
 const studentsDB = new Datastore({ filename: 'C:/xampp/htdocs/WDT Coursework/WPD2---Coursework/backend/db/students.db', autoload: true });
 
-// Define the schema for the students collection
-const studentSchema = {
-  _id: String,
-  username: String,
-  email: String,
-  password: String,
-  role: String,
-  opportunities: [
-    {
-      title: String,
-      description: String,
-      date: Date,
-      time: String,
-      _id: String,
-    }
-  ]
-};
+// Define the opportunity schema using Joi
+const opportunitySchema = Joi.object({
+  _id: Joi.string(),
+  title: Joi.string(),
+  description: Joi.string(),
+  date: Joi.date(),
+  time: Joi.string(),
+});
+
+// Define the schema for the students collection using Joi
+const studentSchema = Joi.object({
+  _id: Joi.string(),
+  user_id: Joi.string(),
+  username: Joi.string().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+  role: Joi.string().required(),
+  opportunities: Joi.array().items(opportunitySchema),
+});
 
 // Attach the schema to the students datastore
 studentsDB.ensureIndex({ fieldName: '_id', unique: true });
 studentsDB.ensureIndex({ fieldName: 'email', unique: true });
 studentsDB.ensureIndex({ fieldName: 'username', unique: true });
 
-// Use the schema to validate documents when inserting/updating
-studentsDB.on('beforeInsert', (doc) => {
-  // Validate the document against the schema before insertion
-  const validationResult = studentsDB.validator.validate(doc, studentSchema);
-  if (validationResult.errors.length > 0) {
-    const errorMessages = validationResult.errors.map((error) => error.message);
-    throw new Error(`Document validation failed: ${errorMessages.join(', ')}`);
-  }
-});
+const validateAndInsert = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Validate the input data against the schema
+      const validationResult = studentSchema.validate(data);
 
-module.exports = studentsDB;
+      if (validationResult.error) {
+        reject(validationResult.error.details.map(d => d.message).join(', '));
+        return;
+      }
+
+      // Insert the validated data into the database
+      studentsDB.insert(validationResult.value, (err, newDoc) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(newDoc);
+        }
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// Export both the NeDB instance and the validation function
+module.exports = { studentsDB, validateAndInsert };

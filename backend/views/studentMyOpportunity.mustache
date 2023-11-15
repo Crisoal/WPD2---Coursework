@@ -54,6 +54,7 @@
   deleteButtons.forEach(button => {
       button.addEventListener('click', (event) => {
           const opportunityId = button.getAttribute('data-opportunity-id');
+
           document.getElementById('deleteForm').action = `/students/viewOpportunity/removeOpportunity/${opportunityId}`;
       });
   });
