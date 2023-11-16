@@ -7,36 +7,39 @@
     box-sizing: border-box;
 }
 
-body{
+body {
     font-family: 'Montserrat', sans-serif;
     overflow-x: hidden;
     background-color: #f5f5f5;
 }
 
-header .navbar-expand-lg .navbar-collapse{
-        display: block !important;
+header .navbar-expand-lg .navbar-collapse {
+    display: block !important;
 }
 
-header nav ul .nav-link{
+header nav ul .nav-link {
     font-size: 13px;
     font-family: 'Raleway', sans-serif;
-} 
+}
 
-header nav ul .nav-item{
+header nav ul .nav-item {
     margin-inline: 5px;
 }
 
 #bg {
     position: relative;
-    height: 80vh; /* Set your desired height */
-    overflow: hidden; /* Hide any overflowing content */  
-    background-color: rgba(0, 0, 0, 0.466); 
+    height: 80vh;
+    /* Set your desired height */
+    overflow: hidden;
+    /* Hide any overflowing content */
+    background-color: rgba(0, 0, 0, 0.466);
 }
 
 #bg video {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Maintain video aspect ratio and cover the container */
+    object-fit: cover;
+    /* Maintain video aspect ratio and cover the container */
     position: absolute;
     top: 0;
     left: 0;
@@ -45,9 +48,12 @@ header nav ul .nav-item{
 
 #bg .container {
     position: absolute;
-    top: 50%; /* Adjust this value to vertically center the container */
-    left: 10%; /* Adjust this value to move the container towards the left */
-    transform: translate(-10%, -50%); /* Center the container horizontally and vertically */
+    top: 50%;
+    /* Adjust this value to vertically center the container */
+    left: 10%;
+    /* Adjust this value to move the container towards the left */
+    transform: translate(-10%, -50%);
+    /* Center the container horizontally and vertically */
     z-index: 1;
     width: 50%;
 }
@@ -58,12 +64,148 @@ header nav ul .nav-item{
     color: #fff;
 }
 
-#bg #overlay-content h2{
+#bg #overlay-content h2 {
     font-weight: bolder;
     color: #F8998D;
     padding-bottom: 10px;
 }
 
-#bg #overlay-content p{
+#bg #overlay-content p {
     font-weight: 500;
+}
+
+h1,
+h4 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+
+.seperator {
+    margin-bottom: 30px;
+    width: 35px;
+    height: 3px;
+    background: #777;
+    border: none;
+}
+
+.title {
+    text-align: center;
+
+    .row {
+        padding: 50px 0 0;
+    }
+
+    h1 {
+        text-transform: uppercase;
+    }
+
+    .seperator {
+        margin: 0 auto 10px;
+    }
+}
+
+#cat .col-md-4 {
+    width: 29%;
+}
+
+#cat .item {
+    position: relative;
+    margin-bottom: 30px;
+    min-height: 1px;
+    float: left;
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    .item-in {
+        background: #fff;
+        padding: 30px;
+        position: relative;
+
+        &:hover:before {
+            width: 100%;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            bottom: 0px;
+            height: 2px;
+            width: 0%;
+            background: #333333;
+            right: 0px;
+            -webkit-transition: width 0.4s;
+            transition: width 0.4s;
+        }
+    }
+
+
+    .item-in h4 {
+        font-size: 14px;
+        font-weight: 700;
+        margin-top: 25px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .item-in p {
+        font-size: .875rem;
+    }
+
+    a {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 12px;
+        text-transform: uppercase;
+        color: #666666;
+        margin-top: 10px;
+
+        i {
+            opacity: 0;
+            padding-left: 0px;
+            transition: 0.4s;
+            font-size: 24px;
+            display: inline-block;
+            top: 5px;
+            position: relative;
+        }
+
+        &:hover {
+            text-decoration: none;
+
+            i {
+                padding-left: 10px;
+                opacity: 1;
+                font-weight: 300;
+            }
+        }
+    }
+
+    .icon {
+        position: absolute;
+        top: 27px;
+        left: -16px;
+        cursor: pointer;
+
+        a {
+            font-family: 'Merriweather', serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: #999;
+            text-transform: none;
+        }
+
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    #cat .item .icon {
+        position: relative;
+        top: 0;
+        left: 0;
+    }
 }
