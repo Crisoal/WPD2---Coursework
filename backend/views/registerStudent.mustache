@@ -13,7 +13,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg">
+        <nav class="navbar navbar-expand-md">
           <div class="container-fluid d-flex">
               <a class="navbar-brand" href="/">
                 <img src="../public/images/Monochrome_Modern_Technology_Black_Logo-removebg-preview - Copy.png" alt="Logo" width="180" height="40" class="d-inline-block align-text-top">
@@ -24,7 +24,7 @@
             </button>
       
             <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav justify-content-end">
+              <ul class="navbar-nav ms-auto">
                   <li class="nav-item">
                       <a class="nav-link" href="/">Home</a>
                   </li>
@@ -63,12 +63,19 @@
     </header>
 
     {{! <div class="wrapper" style="background-image: url('../public/images/pexels-cottonbro-studio-5989941.jpg');"> }}
-
+        <!-- Display validation errors if they exist -->
+       
      <div class="wrapper">
         <div class="inner">
-
                 <form action="/user/student-register" method="post">
                      <h3>Student Registration Form</h3>
+
+                  {{#error}}
+                        <div class="error-messages">
+                            <p>{{{.}}}</p>
+                        </div>
+                  {{/error}}
+
 
                      <div class="form-group">
                             <div class="form-wrapper">                                
@@ -87,16 +94,20 @@
                             <input type="text" id="studentId" name="studentId" pattern="[A-Za-z0-9]+" class="form-control" required>
                     </div>
 
-                     <div class="form-wrapper">
-                             <label for="universityName" class="form-label">University/College Name:</label>
-                             <input type="text" id="universityName" class="form-control" placeholder="Glasgow Caledonian University" disabled>              
+                    <div class="form-wrapper">
+                            <label for="universityName" class="form-label">University/College Name:</label>
+
+                            <select id="universityName" name="universityName" class="form-select" required>
+                            <option value="Glasgow Caledonian University" selected>Glasgow Caledonian University</option>
+                            <option value="African Leadership College">African Leadership College</option>
+                            </select>
                     </div>
+
 
                     <div class="form-wrapper">
                             <label for="academicDepartment" class="form-label">Academic Department/Major:</label>
-                                <select id="academicDepartment" class="form-select" required>
-                                    <option value="" selected disabled>Select Department/Major</option>
-                                    <option value="Computing">Computing</option>
+                                <select id="academicDepartment" name="department" class="form-select" required>
+                                    <option value="Computing" selected>Computing</option>
                                     <option value="Engineering">Engineering</option>
                                     <option value="Business Administration">Business Administration</option>
                                     <option value="Social Science">Social Science</option>

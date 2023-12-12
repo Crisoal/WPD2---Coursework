@@ -3,37 +3,27 @@ const router = express.Router();
 const studentController = require('../controllers/studentController');
 const authController = require('../controllers/authController');
 
-router.get('/login', (req, res) => res.render('login'));
+router.get('/login', (req, res) => {
+    res.render('login', { error: req.flash('error') });
+});
 
 router.post('/login', authController.login);
 
-router.get('/register-student', (req, res) => res.render('registerStudent'));
+router.get('/register-student', (req, res) => {
+    res.render('registerStudent', { error: req.flash('error') });
+});
+
 router.post('/student-register', authController.registerStudent);
 
 router.get('/register-mentor', (req, res) => res.render('registerMentor'));
 router.post('/mentor-register', authController.registerMentor);
 
-// Student routes
-// router.get('/dashboard', authController.ensureAuthenticated, studentController.createDashboard);
-// router.get('/dashboard/:id', authController.ensureAuthenticated, studentController.getDashboard);
-
-router.get('/dashboard', isAuthenticated, (req, res) => {
-    switch (req.user.role) {
-        case 'student':
-            return res.render('studentDashboard', { user: req.user });
-        case 'mentor':
-            return res.render('mentorDashboard', { user: req.user });
-        case 'admin':
-            return res.render('adminDashboard', { user: req.user });
-        default:
-            return res.redirect('/login');
-    }
-});
 
 router.get('/logout', (req, res) => {
     req.logout();
     res.redirect('/login');
 });
+   
 
 // Handle 404 - Not Found
 router.use((req, res, next) => {

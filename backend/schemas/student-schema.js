@@ -17,10 +17,14 @@ const opportunitySchema = Joi.object({
 const studentSchema = Joi.object({
   _id: Joi.string(),
   user_id: Joi.string(),
+  role: Joi.string(),
   username: Joi.string().required(),
+  fullName: Joi.string().required(),
+  studentId: Joi.string().required(),
+  university: Joi.string().required(),
+  department: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().required(),
-  role: Joi.string().required(),
   opportunities: Joi.array().items(opportunitySchema),
 });
 

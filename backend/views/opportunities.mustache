@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MentorXone</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<script src="https://kit.fontawesome.com/4eb0e146e9.js" crossorigin="anonymous"></script>
+    <link href="../public/css/opportunity.css" rel="stylesheet">
+  </head>
+  <body>
+
+      <header>
+        <nav class="navbar navbar-expand-md">
+          <div class="container-fluid d-flex">
+              <a class="navbar-brand" href="/">
+                <img src="../public/images/Monochrome_Modern_Technology_Black_Logo-removebg-preview - Copy.png" alt="Logo" width="180" height="40" class="d-inline-block align-text-top">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+      
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav ms-auto">
+                  <li class="nav-item">
+                      <a class="nav-link" href="/">Home</a>
+                  </li>
+
+                  <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="/opportunities">Mentorship Opportunities</a>
+                  </li>
+
+                  <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contact</a>
+                  </li>
+
+                  <li class="nav-item">
+                      <a class="nav-link" href="/user/login">Login</a>
+                  </li>
+
+                  <li class="nav-item">
+                      <a class="nav-link" href="/user/register-student">Register</a>
+                  </li>
+
+                  <li class="nav-item">
+                      <a class="nav-link" href="/user/register-mentor">Apply as a Mentor</a>
+                  </li>
+      
+              </ul>
+            </div>
+
+          </div>
+
+        </nav>
+
+      </header>
+
+<div class="container">
+    <ul class="nav nav-tabs" id="categoryTabs">
+        {{#student}}
+            {{#categories}}
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="{{_id}}-tab" data-bs-toggle="tab" href="#{{_id}}" role="tab" aria-controls="{{_id}}" aria-selected="true">{{name}}</a>
+                </li>
+            {{/categories}}
+        {{/student}}
+    </ul>
+
+    <div class="tab-content" id="categoryContent">
+        {{#student}}
+            {{#categories}}
+                <div class="tab-pane fade" id="{{_id}}" role="tabpanel" aria-labelledby="{{_id}}-tab">
+                    <div class="row">
+                        {{#opportunities}}
+                            <div class="col-md-4">
+                                <div class="card" data-opportunity-id="{{_id}}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{title}}</h5>
+                                        <p class="card-text">{{description}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Opportunity Modal -->
+                            <div class="modal fade" id="opportunityModal{{_id}}" tabindex="-1" role="dialog" aria-labelledby="opportunityModalLabel{{_id}}" aria-hidden="true">
+                                <!-- Your modal content -->
+                            </div>
+                            <!-- End Opportunity Modal -->
+                        {{/opportunities}}
+                    </div>
+                </div>
+            {{/categories}}
+        {{/student}}
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const categoryTabs = new bootstrap.Tab(document.getElementById('categoryTabs'));
+
+        categoryTabs.show(); // Show the first tab by default
+
+        const cards = document.querySelectorAll(".card");
+
+        cards.forEach(function(card) {
+            card.addEventListener("click", function() {
+                const opportunityId = this.getAttribute("data-opportunity-id");
+                const modal = document.querySelector(`#opportunityModal${opportunityId}`);
+                const bootstrapModal = new bootstrap.Modal(modal);
+
+                // Close Button
+                const closeButton = modal.querySelector(".close");
+                closeButton.addEventListener("click", function() {
+                    bootstrapModal.hide(); // Close the modal
+                });
+
+                bootstrapModal.show();
+            });
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  </body>
+</html>

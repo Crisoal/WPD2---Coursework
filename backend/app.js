@@ -38,12 +38,17 @@ const studentRoutes = require('./routes/studentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const mentorRoutes = require('./routes/mentorRoutes');
 const Routes = require('./routes/routes');
+const contactRoutes = require('./routes/contactRoutes');
+const Opportunity = require('./routes/opportunity');
+
 
 
 // Use routes
 app.use('/students', studentRoutes);
 app.use('/admins', adminRoutes);
 app.use('/mentors', mentorRoutes);
+app.use('/contact', contactRoutes);
+app.use('/opportunities', Opportunity);
 app.use('/user', Routes);
 
 
