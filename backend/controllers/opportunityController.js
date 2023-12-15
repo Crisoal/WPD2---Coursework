@@ -17,8 +17,6 @@ const opportunityController = {
             res.status(500).send(err);
         }
     }
-  
- 
 };
 
 module.exports = opportunityController;

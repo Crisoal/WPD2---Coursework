@@ -17,7 +17,7 @@ router.get('/', opportunityController.getOpportunities);
 
 router.get('/user/:user_id/addOpportunity/:id', studentController.addOpportunity);
 
-router.post('/user/:user_id/schedule', studentController.scheduleOpportunity);
+// router.post('/user/:user_id/schedule', studentController.scheduleOpportunity);
 
 router.get('/user/:user_id/viewOpportunity', studentController.viewOpportunities);
 

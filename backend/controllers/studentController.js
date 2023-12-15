@@ -111,11 +111,16 @@ const studentController = {
                 // Add the opportunity to the student's opportunities list
                 studentData.opportunities.push({
                     _id: opportunity._id,
+                    category_id: opportunity.category_id,
+                    categoryName: opportunity.categoryName,
                     title: opportunity.title,
                     description: opportunity.description,
-                    date: opportunity.date,
-                    time: opportunity.time,
+                    sessionDuration: opportunity.sessionDuration,
+                    image: opportunity.image,
+                    obj: opportunity.obj,
+                    duration: opportunity.duration,
                 });
+                
     
                 // Update the student data in the database
                 try {
@@ -160,8 +165,6 @@ const studentController = {
         }
       },
 
-   
-
     opportunityDetails: async (req, res) => {
         try {
             // Get the opportunity ID from the route parameter.
@@ -177,12 +180,16 @@ const studentController = {
             // Modify the opportunity data as needed before insertion.
             const opportunityDetails = {
                 // Map the opportunity fields to the corresponding student fields
-                // Adjust this mapping according to your data structure
-                _id: opportunity.id,
-                title: opportunity.title,
-                description: opportunity.description,
-                date: opportunity.date,
-                time: opportunity.time,
+                    _id: opportunity._id,
+                    category_id: opportunity.category_id,
+                    categoryName: opportunity.categoryName,
+                    title: opportunity.title,
+                    description: opportunity.description,
+                    mentorAvailability: opportunity.mentorAvailability,
+                    sessionDuration: opportunity.sessionDuration,
+                    image: opportunity.image,
+                    obj: opportunity.obj,
+                    duration: opportunity.duration,              
             };
 
             // Assuming you have a render function and a studentModifyOpportunity.mustache template

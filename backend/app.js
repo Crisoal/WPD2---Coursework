@@ -32,6 +32,7 @@ app.use(passport.session());
 
 app.use(methodOverride('_method'));
 
+var Handlebars = require('handlebars');
 
 // Import routes
 const studentRoutes = require('./routes/studentRoutes');
