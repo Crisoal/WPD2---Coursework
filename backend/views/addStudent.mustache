@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Student</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <script src="https://kit.fontawesome.com/4eb0e146e9.js" crossorigin="anonymous"></script>
+
+    <link href="../public/css/styles.css" rel="stylesheet">
+  </head>
+  <body>
+
+      <header>
+        <nav class="navbar navbar-expand-md justify-content-center">
+          <div class="container-fluid d-flex">
+              <a class="navbar-brand" href="/" target="_blank">
+                <img src="../public/images/Monochrome_Modern_Technology_Black_Logo-removebg-preview - Copy.png" alt="Logo" width="180" height="40" class="d-inline-block align-text-top">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+      
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav ms-auto">
+                  <li class="nav-item">
+                      <a class="nav-link" href="/">Dashboard</a>
+                  </li>
+
+                  <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/admin/students">Students</a>
+                  </li>
+
+                   <li class="nav-item">
+                      <a class="nav-link" href="/admin/opportunities">Mentorship Opportunities</a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="/admin/mentors">Mentors</a>
+                  </li>
+
+                  <li class="nav-item">
+                      <a class="nav-link" href="/user/login">Login</a>
+                  </li>
+
+              </ul>
+            </div>
+
+          </div>
+
+        </nav>
+
+      </header>
+
+
+<section class="container mt-4">
+  <h1>Add New Student</h1>
+  
+  <!-- Form to add a new student -->
+  <form action="/admin/students/added" method="POST">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="fname" class="form-label">Full Name</label>
+          <input type="text" class="form-control" id="fname" name="fname" required>
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-3">
+          <label for="studentId" class="form-label">Student ID</label>
+          <input type="text" class="form-control" id="studentId" name="studentId" pattern="[A-Za-z0-9]+" required>
+        </div>
+        <div class="mb-3">
+          <label for="universityName" class="form-label">University/College Name</label>
+          <select class="form-select" id="universityName" name="universityName" required>
+            <option value="Glasgow Caledonian University" selected>Glasgow Caledonian University</option>
+            <option value="African Leadership College">African Leadership College</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="academicDepartment" class="form-label">Academic Department/Major</label>
+          <select class="form-select" id="academicDepartment" name="department" required>
+            <option value="Computing" selected>Computing</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Business Administration">Business Administration</option>
+            <option value="Social Science">Social Science</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</section>
+
+      
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>

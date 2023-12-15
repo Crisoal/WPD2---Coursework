@@ -45,7 +45,7 @@ const Opportunity = require('./routes/opportunity');
 
 // Use routes
 app.use('/students', studentRoutes);
-app.use('/admins', adminRoutes);
+app.use('/admin', adminRoutes);
 app.use('/mentors', mentorRoutes);
 app.use('/contact', contactRoutes);
 app.use('/opportunities', Opportunity);

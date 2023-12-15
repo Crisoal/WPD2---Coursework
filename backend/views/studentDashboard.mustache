@@ -2,8 +2,15 @@
 <html>
 <head>
    <title>Student Dashboard</title>
+
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-<script src="https://kit.fontawesome.com/4eb0e146e9.js" crossorigin="anonymous"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css" />
+   <!-- Handlebars.js -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
+
+
+   <script src="https://kit.fontawesome.com/4eb0e146e9.js" crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -22,31 +29,23 @@
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav ms-auto">
                   <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="/">Home</a>
+                      <a class="nav-link active" aria-current="page" href="/">Mentorship Opportunities</a>
                   </li>
 
                   <li class="nav-item">
-                      <a class="nav-link" href="/opportunities">Mentorship Opportunities</a>
+                      <a class="nav-link" href="/students/user/{{user_id}}/viewOpportunity">My Opportunities</a>
                   </li>
 
                   <li class="nav-item">
-                        <a class="nav-link" href="/about">About</a>
+                        <a class="nav-link" href="/about">Find a Mentor</a>
                   </li>
 
                   <li class="nav-item">
-                    <a class="nav-link" href="/contact">Contact</a>
+                        <a class="nav-link" href="/about">My Goals</a>
                   </li>
 
                   <li class="nav-item">
-                      <a class="nav-link" href="/user/login">Login</a>
-                  </li>
-
-                  <li class="nav-item">
-                      <a class="nav-link" href="/user/register-student">Register</a>
-                  </li>
-
-                  <li class="nav-item">
-                      <a class="nav-link" href="/user/register-mentor">Apply as a Mentor</a>
+                    <a class="nav-link" href="/contact">Profile</a>
                   </li>
       
               </ul>
@@ -56,74 +55,212 @@
 
         </nav>
 
-    </header>
-
+</header>
 
 
 {{#student}}
-<div class="container">
-   {{#categories}}
-   <h4>{{name}}</h4>
-   <div class="row">
-       {{#opportunities}}
-       <div class="col-md-4">
-           <div class="card mt-5 ml-3 mr-3" data-opportunity-id="{{_id}}">
-              <img class="card-img-top" src="../public/images/pexels-cottonbro-studio-5989928.jpg" alt="Card image cap">
-               <div class="card-body">
-                   <h5 class="card-title">{{title}}</h5>
-                   <p class="card-text mt-2">DESCRIPTION</p>
-                   <p class="card-text"><small class="text">{{description}}</small></p>
-               </div>
-           </div>
-       </div>
-       <!-- Opportunity Modal -->
-       <div class="modal fade" id="opportunityModal{{_id}}" tabindex="-1" role="dialog" aria-labelledby="opportunityModalLabel{{_id}}" aria-hidden="true">
-           <div class="modal-dialog" role="document">
-               <div class="modal-content">
-                   <div class="modal-header">
-                       <h6 class="modal-title" id="opportunityModalLabel{{_id}}">{{title}}</h6>
-                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                           <span aria-hidden="true">&times;</span>
-                       </button>
-                   </div>
-                   <div class="modal-body">
-                       <p>{{description}}</p>
-                       <a href="/students/user/{{user_id}}/addOpportunity/{{_id}}" class="btn btn-primary">Add Opportunity</a>
-                   </div>
-                
-               </div>
-           </div>
-       </div>
-       <!-- End Opportunity Modal -->
-       {{/opportunities}}
-   </div>
-   {{/categories}}
+            <!-- Tabs -->
+            <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+            {{#categories}}
+            <li class="nav-item" role="presentation">
+                <button
+                data-bs-toggle="tab"
+                class="nav-link"
+                id="{{category_id}}-tab"
+                data-bs-target="#{{category_id}}"
+                type="button"
+                role="tab"
+                aria-controls="{{category_id}}"
+                aria-selected="false">
+                {{categoryName}}
+                </button>
+            </li>
+            {{/categories}}
+            </ul>
 
-   </div>
-   {{/student}}
+            <!-- Tab Content -->
+            <div class="tab-content" id="myTabContent">
+            {{#categories}}
+            <div class="tab-pane fade" id="{{category_id}}" role="tabpanel" aria-labelledby="{{category_id}}-tab">
+                {{#opportunities}}
+                {{#if ../category_id}}
+                <div class="col-md-4">
+                    <div class="card mt-5 ml-3 mr-3" data-opportunity-id="{{_id}}">
+                        <img class="card-img-top" src="../public/images/pexels-cottonbro-studio-5989928.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{title}}</h5>
+                            <p class="card-text mt-2">CATEGORY</p>
+                            <p class="card-text"><small class="text">{{categoryName}}</small></p>
+                            <p class="card-text mt-2">DESCRIPTION</p>
+                            <p class="card-text"><small class="text">{{description}}</small></p>
+                        </div>
+                    </div>
+                </div>
+                {{/if}}
+                {{/opportunities}}
+            </div>
+            {{/categories}}
+            </div>
+
+
+        <div class="modal fade" id="opportunityModal" tabindex="-1" role="dialog" aria-labelledby="opportunityModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="/mentors-profile"> View Mentors' Profile </a>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    
+                    <div class="modal-body">
+                                        <div class="container">
+                                            
+                                                <label>Opportunity Title</label>
+                                                <h6 class="modal-title" id="opportunityModalLabel{{_id}}">{{title}}</h6>
+                                                <hr>
+                                            
+                                                <div class="side-label">
+                                                    <label>Category</label>
+                                                    <p class="bordered-value">{{categoryName}}</p>
+                                                </div>
+
+                                                <div class="side-label">
+                                                    <label>Opportunity Image</label>
+                                                    <p>{{image}}</p>
+                                                </div>
+                                                
+                                                <div class="side-label">
+                                                    <label>Description</label>
+                                                    <p class="bordered-value">{{description}}</p>
+                                                </div>
+
+                                                <div class="side-label">
+                                                    <label>Mentorship Objectives</label>
+                                                    <ul class="bordered-value">
+                                                        {{#obj}}
+                                                            <li>{{.}}</li>
+                                                        {{/obj}}
+                                                    </ul>
+                                                </div>
+
+
+                                                <div class="side-label">
+                                                    <label>Duration</label>
+                                                    <p class="bordered-value">{{duration}}</p>
+
+                                                    <label>Session Duration</label>
+                                                    <p class="bordered-value">{{sessionDuration}}</p>
+                                                </div>
+
+                                            <form action="/students/user/{{user_id}}/schedule" method="POST">
+                                                    <div class="side-label">
+                                                        <label>Select a Mentor</label>
+                                                        <select name="mentorSelect" id="mentorSelect" class="bordered-value">
+                                                            {{#each opportunities.mentorAvailability}}
+                                                                <option value="{{mentorName}}">{{mentorName}}</option>
+                                                            {{/each}}
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="side-label">
+                                                        <label>Schedule a Meeting</label>
+                                                        <input type="text" name="meetingDate" class="bordered-value datepicker" />
+                                                        <input type="text" name="meetingTime" class="bordered-value timepicker" />
+                                                        <button type="submit" class="schedule-button">Schedule</button>
+                                                    </div>
+                                            </form>
+
+                                                
+                                            <a href="/students/user/{{user_id}}/addOpportunity/{{_id}}" class="btn btn-primary">Add Opportunity</a>
+                                        </div>
+
+                    </div>
+                </div>
+           </div>
+        </div>
+      
+{{/student}}
+
+<!-- JavaScript -->
+<script>
+  const tabButtons = document.querySelectorAll('.nav-link');
+  tabButtons.forEach(button => {
+     button.addEventListener('click', () => {
+         tabButtons.forEach(btn => btn.classList.remove('active'));
+         button.classList.add('active');
+     });
+  });
+</script>
+
 
    <script>
-       document.addEventListener("DOMContentLoaded", function() {
-    const cards = document.querySelectorAll(".card");
+            document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', () => {
+            // Get the opportunity details
+            const opportunityId = card.getAttribute('data-opportunity-id');
+            const opportunity = opportunities.find(opportunity => opportunity.id === opportunityId);
 
-    cards.forEach(function(card) {
-        card.addEventListener("click", function() {
-            const opportunityId = this.getAttribute("data-opportunity-id");
-            const modal = document.querySelector(`#opportunityModal${opportunityId}`);
-            const bootstrapModal = new bootstrap.Modal(modal);
+            // Update the modal window with the opportunity details
+            document.querySelector('#opportunityModalLabel').innerText = opportunity.title;
+            document.querySelector('#opportunityModal .modal-body').innerText = opportunity.description;
 
-            // Close Button
-            const closeButton = modal.querySelector(".close");
-            closeButton.addEventListener("click", function() {
-                bootstrapModal.hide(); // Close the modal
-            });
-
-            bootstrapModal.show();
+            // Show the modal window
+            const modal = new bootstrap.Modal(document.getElementById('opportunityModal'));
+            modal.show();
         });
-    });
-});
+        });
    </script>
+   
+<script>
+  document.getElementById('mentorSelect').addEventListener('change', function() {
+      var mentorName = this.value;
+      var mentorAvailability = {{opportunities.mentorAvailability}};
+      var mentor = mentorAvailability.find(mentor => mentor.mentorName === mentorName);
+
+      if (mentor) {
+          var recurringDays = mentor.recurringDays;
+          var times = mentor.times;
+
+          // Display the available days and times
+          $('.datepicker').datepicker('destroy');
+          $('.datepicker').datepicker({
+              format: 'dd-mm-yyyy',
+              daysOfWeekDisabled: recurringDays.map(day => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(day)),
+          });
+
+          $('.timepicker').timepicker('destroy');
+          $('.timepicker').timepicker({
+              'minTime': '00:00',
+              'maxTime': '23:59',
+              'step': 60,
+              'disableTimeRanges': times.map(time => [time, time]),
+          });
+      }
+  });
+
+  $('.datepicker').datepicker({
+      format: 'dd-mm-yyyy',
+  });
+
+  $('.timepicker').timepicker({
+      'minTime': '00:00',
+      'maxTime': '23:59',
+      'step': 60,
+  });
+</script>
+
+
+ 
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
 
 </body>
 </html>
+
+
+

@@ -5,6 +5,7 @@ const { body, validationResult } = require('express-validator');
 const User = require('../models/user');
 const studentModel = require('../models/studentModel');
 const mentorModel = require('../models/mentorModel');
+const adminModel = require('../models/adminModel');
 const studentController = require('../controllers/studentController');
 
 // Helper function to validate email format
@@ -85,7 +86,7 @@ passport.use('local-student', new LocalStrategy({
 
         const newUser = {
             username: req.body.username,
-            email: email,
+            email: req.body.email,
             password: hashedPassword, // Store the hashed password
             role: 'student',
             fullName: req.body.fname,
@@ -97,6 +98,11 @@ passport.use('local-student', new LocalStrategy({
         const insertedUser = await User.insert(newUser);
 
         await studentModel.insert({
+            ...newUser,
+            user_id: insertedUser._id,
+        });
+
+        await adminModel.addStudent({
             ...newUser,
             user_id: insertedUser._id,
         });
@@ -140,22 +146,18 @@ passport.use('local-mentor', new LocalStrategy({
 
 const authController = {
     // Inside the login controller:
+    // Modify the login route to handle authentication for admins and mentors as well as students
     login: [
         async (req, res, next) => {
             try {
                 const { usernameOrEmail, password } = req.body;
-                const errors = [];
 
-                if (!usernameOrEmail) {
-                    req.flash('error', 'Username or email is required');
+                if (!usernameOrEmail || !password) {
+                    req.flash('error', 'Username/email and password are required');
                     return res.redirect('/user/login');
                 }
 
-                if (!password) {
-                    req.flash('error', 'Password is required');
-                    return res.redirect('/user/login');
-                }
-
+                // Authenticate against student, admin, and mentor databases
                 passport.authenticate('local', async (err, user, info) => {
                     if (err) {
                         console.error(err);
@@ -176,15 +178,20 @@ const authController = {
 
                         console.log('Logged in user role:', user.role);
 
-                        if (!req.user || !req.user._id) {
-                            req.flash('error', 'Unauthorized');
-                            return res.redirect('/user/login');
-                        }
-
                         if (user.role === 'student') {
+                            // Redirect students to their dashboard
                             await studentController.getDashboard(req.user._id, res);
+                        } else if (user.role === 'admin') {
+                            // Redirect admins to their dashboard or appropriate section
+                            // You might have an adminController to handle admin dashboard or actions
+                            res.redirect('/admin');
+                        } else if (user.role === 'mentor') {
+                            // Redirect mentors to their dashboard or appropriate section
+                            // You might have a mentorController to handle mentor dashboard or actions
+                            res.redirect('/mentors');
                         } else {
-                            res.redirect(redirectPath);
+                            req.flash('error', 'Unauthorized role');
+                            return res.redirect('/user/login');
                         }
                     });
                 })(req, res, next);

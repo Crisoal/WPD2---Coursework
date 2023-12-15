@@ -160,6 +160,8 @@ const studentController = {
         }
       },
 
+   
+
     opportunityDetails: async (req, res) => {
         try {
             // Get the opportunity ID from the route parameter.
