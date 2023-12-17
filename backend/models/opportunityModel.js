@@ -1,5 +1,5 @@
 const Datastore = require('nedb');
-const db = new Datastore({ filename: 'C:/WPD2 - Coursework/backend/db/opportunities.db', autoload: true });
+const db = new Datastore({ filename: 'C:/xampp/htdocs/WDT Coursework/WPD2---Coursework/backend/db/opportunities.db', autoload: true });
 
 const opportunityModel = {
    find: (query) => {

@@ -12,7 +12,7 @@ const opportunityController = {
                 category.opportunities = opportunities.filter(opportunity => opportunity.category_id === category.category_id);
             });
  
-            res.render('studentDashboard', { categories });
+            res.render('opportunities', { categories });
         } catch (err) { 
             res.status(500).send(err);
         }

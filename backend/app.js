@@ -7,7 +7,7 @@ const Datastore = require('nedb');
 const flash = require('connect-flash');
 const path = require('path');
 const methodOverride = require('method-override');
-const studentController = require('./controllers/studentController');
+// const studentController = require('./controllers/studentController');
 
 const app = express();
 
@@ -15,9 +15,11 @@ app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
 
 app.use(session({
   secret: '23ddc5edb17e6c703bff2c1b4bd28b2ec2683f3272595b7fe858dc7ab10cbc38',
@@ -32,7 +34,7 @@ app.use(passport.session());
 
 app.use(methodOverride('_method'));
 
-var Handlebars = require('handlebars');
+
 
 // Import routes
 const studentRoutes = require('./routes/studentRoutes');
@@ -54,7 +56,7 @@ app.use('/user', Routes);
 
 
 
-app.delete('/students/removeOpportunity/:id', studentController.removeOpportunity);
+// app.delete('/students/removeOpportunity/:id', studentController.removeOpportunity);
 
 const dbPath = path.join(__dirname, 'db');
 const db = {

@@ -1,5 +1,5 @@
 const Datastore = require('nedb');
-const db = new Datastore({ filename: '../db/opportunities.db', autoload: true });
+const db = new Datastore({ filename: 'C:/xampp/htdocs/WDT Coursework/WPD2---Coursework/backend/db/opportunities.db', autoload: true });
 
 
 
@@ -64,7 +64,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/skills development/pexels-anna-tarazevich-5598284.jpg',
+        image: '/public/images/skills development/pexels-anna-tarazevich-5598284.jpg',
         obj: [
             'Enhancing leadership capabilities',
             'Developing effective team management skills',
@@ -98,7 +98,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/skills development/pexels-andrea-piacquadio-3965676.jpg',
+        image: '/public/images/skills development/pexels-andrea-piacquadio-3965676.jpg',
         obj: [
             'Enhancing Clarity in Communication',
             'Developing Persuasive Skills',
@@ -131,7 +131,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/skills development/pexels-annushka-ahuja-8114321.jpg',
+        image: '/public/images/skills development/pexels-annushka-ahuja-8114321.jpg',
         obj: [
             'Project Planning and Organization Skills',
             'Execution and Implementation Strategies',
@@ -170,7 +170,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/skills development/pexels-antoni-shkraba-4348403.jpg',
+        image: '/public/images/skills development/pexels-antoni-shkraba-4348403.jpg',
         obj: [
             'Enhancing problem-solving abilities through coding challenges',
             'Improving proficiency in various programming languages',
@@ -204,7 +204,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/skills development/pexels-michael-burrows-7147664.jpg',
+        image: '/public/images/skills development/pexels-michael-burrows-7147664.jpg',
         obj: [
             'Mastering data querying and manipulation techniques',
             'Understanding statistical analysis and data visualization',
@@ -237,7 +237,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/skills development/pexels-sora-shimazaki-5926382.jpg',
+        image: '/public/images/skills development/pexels-sora-shimazaki-5926382.jpg',
         obj: [
             'Enhancing communication skills for effective collaboration',
             'Cultivating adaptability and resilience in various situations',
@@ -273,7 +273,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../backend/public/images/career advice\pexels-alex-green-5699479.jpg',
+        image: '/public/images/career advice/pexels-alex-green-5699479.jpg',
         obj: [
             'Exploring diverse career paths',
             'Understanding different industries',
@@ -306,7 +306,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/career advice/pexels-alexander-suhorucov-6457515.jpg',
+        image: '/public/images/career advice/pexels-alexander-suhorucov-6457515.jpg',
         obj: [
             'Developing personalized job search plans',
             'Identifying effective job boards',
@@ -340,7 +340,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/career advice/pexels-alexander-suhorucov-6457544.jpg',
+        image: '/public/images/career advice/pexels-alexander-suhorucov-6457544.jpg',
         obj: [
             'Guidance for career transitions',
             'Resume enhancement tips',
@@ -379,7 +379,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/career advice/pexels-andrea-piacquadio-3771045.jpg',
+        image: '/public/images/career advice/pexels-andrea-piacquadio-3771045.jpg',
         obj: [
             'Developing a professional online presence',
             'Optimizing LinkedIn profiles',
@@ -412,7 +412,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/career advice/pexels-anna-tarazevich-5598285.jpg',
+        image: '/public/images/career advice/pexels-anna-tarazevich-5598285.jpg',
         obj: [
             'Networking strategies and tips',
             'Introductions to industry contacts',
@@ -445,7 +445,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/career advice/pexels-mikael-blomkvist-6476582.jpg',
+        image: '/public/images/career advice/pexels-mikael-blomkvist-6476582.jpg',
         obj: [
             'Defining clear career objectives',
             'Creating actionable plans',
@@ -483,7 +483,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/resume/pexels-andrea-piacquadio-3760072.jpg',
+        image: '/public/images/resume/pexels-andrea-piacquadio-3760072.jpg',
         obj: [
             'Improving content and clarity in resumes',
             'Enhancing resume formatting',
@@ -517,7 +517,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/resume/pexels-anna-tarazevich-5598289.jpg',
+        image: '/public/images/resume/pexels-anna-tarazevich-5598289.jpg',
         obj: [
             'Crafting tailored cover letters',
             'Ensuring cover letters stand out',
@@ -551,7 +551,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/resume/pexels-brett-jordan-8500468.jpg',
+        image: '/public/images/resume/pexels-brett-jordan-8500468.jpg',
         obj: [
             'Keyword optimization for ATS',
             'Formatting for ATS compatibility',
@@ -584,7 +584,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/resume/pexels-lukas-590016.jpg',
+        image: '/public/images/resume/pexels-lukas-590016.jpg',
         obj: [
             'Feedback on portfolio organization',
             'Enhancing portfolio presentation',
@@ -618,7 +618,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../public/images/resume/pexels-markus-winkler-4101343.jpg',
+        image: '/public/images/resume/pexels-markus-winkler-4101343.jpg',
         obj: [
             'Improving profile completeness',
             'Enhancing profile content',
@@ -651,7 +651,7 @@ const opportunities = [
 
         ],
         sessionDuration: '1 hour',
-        image: '../backend/public/images/resume/pexels-tara-winstead-7666429.jpg',
+        image: '/public/images/resume/pexels-tara-winstead-7666429.jpg',
         obj: [
             'Utilizing documents for personal branding',
             'Presenting authentic self through documents',
@@ -690,7 +690,7 @@ const opportunities = [
 
         ],
         sessionDuration: '30 minutes',
-        image: '../public/images/mock interview/pexels-anna-shvets-4226140.jpg',
+        image: '/public/images/mock interview/pexels-anna-shvets-4226140.jpg',
         obj: [
             'Practice and refine interview skills',
             'Receive constructive feedback',
@@ -703,7 +703,7 @@ const opportunities = [
         type: 'opportunity',
         category_id: 'C004',
         categoryName: 'Mock Interview',
-        title: '  Behavioral Interview Coaching',
+        title: '  Behavioural Interview Coaching',
         description: ' Mentors will specialize in coaching students for behavioral interviews. They can provide tips and guidance on answering common behavioral questions with confidence and clarity.',
         mentorAvailability: [
             {
@@ -724,7 +724,7 @@ const opportunities = [
 
         ],
         sessionDuration: '30 minutes',
-        image: '../backend/public/images/mock interview\pexels-anna-tarazevich-5598283.jpg',
+        image: '/public/images/mock interview/pexels-anna-tarazevich-5598283.jpg',
         obj: [
             'Prepare for behavioral interview scenarios',
             'Gain confidence in answering behavioral questions',
@@ -758,7 +758,7 @@ const opportunities = [
 
         ],
         sessionDuration: '30 minutes',
-        image: '../public/images/mock intervie/pexels-mart-production-7606056.jpg',
+        image: '/public/images/mock interview/pexels-mart-production-7606056.jpg',
         obj: [
             'Simulate technical interview scenarios',
             'Practice coding challenges and problem-solving',
@@ -791,7 +791,7 @@ const opportunities = [
 
         ],
         sessionDuration: '30 minutes',
-        image: '../public/images/mock interview/pexels-mizuno-k-12912109.jpg',
+        image: '/public/images/mock interview/pexels-mizuno-k-12912109.jpg',
         obj: [
             'Enhance presentation and communication abilities',
             'Improve public speaking skills',
@@ -825,7 +825,7 @@ const opportunities = [
 
         ],
         sessionDuration: '30 minutes',
-        image: '../public/images/mock interview/pexels-tima-miroshnichenko-5439453.jpg',
+        image: '/public/images/mock interview/pexels-tima-miroshnichenko-5439453.jpg',
         obj: [
             'Practice solving business cases',
             'Gain insights into consulting-related interviews',
@@ -858,7 +858,7 @@ const opportunities = [
 
         ],
         sessionDuration: '30 minutes',
-        image: '../public/images/mock interview/pexels-tima-miroshnichenko-5439469.jpg',
+        image: '/public/images/mock interview/pexels-tima-miroshnichenko-5439469.jpg',
         obj: [
             'Boost self-assurance for interviews',
             'Improve body language and presence',
@@ -895,7 +895,7 @@ const opportunities = [
 
         ],
         sessionDuration: '45 minutes',
-        image: '../public/images/well-being/pexels-irina-iriser-1379627.jpg',
+        image: '/public/images/well-being/pexels-irina-iriser-1379627.jpg',
         obj: [
             'Building resilience in challenging situations',
             'Providing strategies for stress management',
@@ -929,7 +929,7 @@ const opportunities = [
 
         ],
         sessionDuration: '45 minutes',
-        image: '../public/images/well-being/pexels-karyme-frança-1535907.jpg',
+        image: '/public/images/well-being/pexels-karyme-frança-1535907.jpg',
         obj: [
             'Teaching mindfulness techniques for reducing anxiety',
             'Guiding meditation practices to improve focus',
@@ -962,7 +962,7 @@ const opportunities = [
 
         ],
         sessionDuration: '45 minutes',
-        image: '../public/images/well-being/pexels-lumn-351961.jpg',
+        image: '/public/images/well-being/pexels-lumn-351961.jpg',
         obj: [
             'Offering advice on maintaining a balanced diet',
             'Providing guidance for a healthy lifestyle',
@@ -1001,7 +1001,7 @@ const opportunities = [
 
         ],
         sessionDuration: '45 minutes',
-        image: '../public/images/well-being/pexels-marta-branco-1295572.jpg',
+        image: '/public/images/well-being/pexels-marta-branco-1295572.jpg',
         obj: [
             'Teaching effective time management skills',
             'Balancing academic/professional life with personal time',
@@ -1034,7 +1034,7 @@ const opportunities = [
 
         ],
         sessionDuration: '45 minutes',
-        image: '../public/images/well-being/pexels-nicollazzi-xiong-668353.jpg',
+        image: '/public/images/well-being/pexels-nicollazzi-xiong-668353.jpg',
         obj: [
             'Creating a supportive peer network',
             'Sharing experiences for mutual support',
@@ -1067,7 +1067,7 @@ const opportunities = [
 
         ],
         sessionDuration: '45 minutes',
-        image: '../public/images/well-being/pexels-pixabay-40751.jpg',
+        image: '/public/images/well-being/pexels-pixabay-40751.jpg',
         obj: [
             'Providing access to informative articles on mental health',
             'Sharing educational videos for mental health awareness',

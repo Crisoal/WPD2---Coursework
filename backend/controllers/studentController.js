@@ -47,21 +47,33 @@ const studentController = {
                 return null;
             }
 
-            // Perform logic to organize the student dashboard data with opportunities
-            const categories = await opportunityModel.find({ type: 'category' });
+            // Fetch the opportunities for the student
             const opportunities = await opportunityModel.find({ type: 'opportunity' });
 
-            categories.forEach(category => {
-                category.opportunities = opportunities.filter(opportunity => opportunity.category_id === category.category_id);
+            // Create a map of mentor names to mentor availability data
+            const mentorAvailabilityMap = new Map();
+            opportunities.forEach(opportunity => {
+                opportunity.mentorAvailability.forEach(mentorAvailability => {
+                    mentorAvailabilityMap.set(mentorAvailability.mentorName, mentorAvailability);
+                });
             });
 
-            // Render the studentDashboard.mustache template
-            res.render('studentDashboard', { student, categories, user_id: student.query.user_id });
+
+            // Perform logic to organize the student dashboard data with opportunities
+            const categories = await opportunityModel.find({ type: 'category' });
+
+            // Fetch the categories and their associated opportunities in parallel
+            const categoriesWithOpportunities = await Promise.all(categories.map(async (category) => {
+                const categoryOpportunities = opportunities.filter(opportunity => opportunity.category_id === category.category_id);
+                return { ...category, opportunities: categoryOpportunities };
+            }));
+
+            res.render('studentDashboard', { student, categories: categoriesWithOpportunities, mentorAvailabilityMap, user_id: student.query.user_id });
 
             console.log(user_id);
-
             // You can also return some data if needed
-            return { student, categories };
+            return { student, categories: categoriesWithOpportunities };
+
         } catch (err) {
             console.error('Error creating dashboard data:', err);
             // Handle the error as needed
@@ -73,40 +85,40 @@ const studentController = {
         try {
             // Extract route parameters
             const { user_id, id: opportunityId } = req.params;
-    
+
             // Find the student in the studentsDB by user_id
             let studentData = await studentModel.findByUserId(user_id);
-    
+
             console.log("Student Data:", studentData);
-    
+
             if (!opportunityId) {
                 return res.status(400).json({ error: 'OpportunityId is required.' });
             }
-    
+
             // Find the opportunity in the opportunity model by _id.
             const opportunity = await opportunityModel.findOne({ _id: opportunityId });
-    
+
             console.log(opportunity);
-    
+
             if (!opportunity) {
                 return res.status(404).json({ error: 'Opportunity not found.' });
             }
-    
+
             // Ensure that studentData.opportunities is initialized as an array
             if (!studentData) {
                 // If the student doesn't exist, handle it appropriately (e.g., return an error)
                 return res.status(404).json({ error: 'Student not found.' });
             }
-    
+
             if (!studentData.opportunities) {
                 studentData.opportunities = [];
             }
-    
+
             // Check if the opportunity is already added for the student
             const existingOpportunity = studentData.opportunities.find(
                 (opp) => opp._id.toString() === opportunity._id.toString()
             );
-    
+
             if (!existingOpportunity) {
                 // Add the opportunity to the student's opportunities list
                 studentData.opportunities.push({
@@ -115,13 +127,14 @@ const studentController = {
                     categoryName: opportunity.categoryName,
                     title: opportunity.title,
                     description: opportunity.description,
+                    mentorAvailability: opportunity.mentorAvailability,
                     sessionDuration: opportunity.sessionDuration,
                     image: opportunity.image,
                     obj: opportunity.obj,
                     duration: opportunity.duration,
                 });
-                
-    
+
+
                 // Update the student data in the database
                 try {
                     await studentModel.updateStudent(studentData._id, { opportunities: studentData.opportunities });
@@ -141,111 +154,126 @@ const studentController = {
 
     viewOpportunities: async (req, res) => {
         try {
-          // Extract the user_id from route parameters
-          const { user_id } = req.params;
+            // Extract the user_id from route parameters
+            const { user_id } = req.params;
     
-          // Find the student in the studentsDB by user_id
-          const studentData = await studentModel.findByUserId(user_id);
+            // Find the student in the studentsDB by user_id
+            const studentData = await studentModel.findByUserId(user_id);
     
-          // Check if the student with the specified user_id exists
-          if (!studentData) {
-            return res.status(404).json({ error: 'Student not found.' });
-          }
+            // Check if the student with the specified user_id exists
+            if (!studentData) {
+                return res.status(404).json({ error: 'Student not found.' });
+            }
     
-          // Check if the student has any opportunities
-          if (!studentData.opportunities || studentData.opportunities.length === 0) {
-            return res.status(404).json({ error: 'No opportunities found for the student.' });
-          }
-    
-          // Assuming you have a render function and a studentMyOpportunity.mustache template
-          render(res, 'studentMyOpportunity', { opportunities: studentData.opportunities });
+            // Render the student's data, including user_id and opportunities,
+            // onto the studentMyOpportunity.mustache template
+            render(res, 'studentMyOpportunity', { 
+                user_id: user_id, // Include user_id in the data passed to the template
+                student: studentData 
+            });
         } catch (err) {
-          console.error('Error in viewOpportunities:', err);
-          res.status(500).json({ error: 'Internal server error.' });
+            console.error('Error in viewOpportunities:', err);
+            res.status(500).json({ error: 'Internal server error.' });
         }
-      },
-
+    },
+    
     opportunityDetails: async (req, res) => {
         try {
-            // Get the opportunity ID from the route parameter.
-            const opportunityId = req.params.id;
-
-            // Find the opportunity in the opportunity model by _id.
-            const opportunity = await opportunityModel.findById(opportunityId);
-
+            // Extract route parameters
+            const { user_id, id: opportunityId } = req.params;
+    
+            // Find the student in the studentsDB by user_id
+            let studentData = await studentModel.findByUserId(user_id);
+    
+            if (!studentData) {
+                return res.status(404).json({ error: 'Student not found.' });
+            }
+    
+            // Find the opportunity by its id
+            const opportunity = studentData.opportunities.find(opportunity => opportunity._id === opportunityId);
+    
             if (!opportunity) {
                 return res.status(404).json({ error: 'Opportunity not found.' });
             }
-
-            // Modify the opportunity data as needed before insertion.
+    
             const opportunityDetails = {
-                // Map the opportunity fields to the corresponding student fields
-                    _id: opportunity._id,
-                    category_id: opportunity.category_id,
-                    categoryName: opportunity.categoryName,
-                    title: opportunity.title,
-                    description: opportunity.description,
-                    mentorAvailability: opportunity.mentorAvailability,
-                    sessionDuration: opportunity.sessionDuration,
-                    image: opportunity.image,
-                    obj: opportunity.obj,
-                    duration: opportunity.duration,              
+                _id: opportunity._id,
+                category_id: opportunity.category_id,
+                categoryName: opportunity.categoryName,
+                title: opportunity.title,
+                description: opportunity.description,
+                mentorAvailability: opportunity.mentorAvailability,
+                sessionDuration: opportunity.sessionDuration,
+                image: opportunity.image,
+                obj: opportunity.obj,
+                duration: opportunity.duration,
             };
-
-            // Assuming you have a render function and a studentModifyOpportunity.mustache template
-            render(res, 'studentModifyOpportunity', { opportunities: opportunityDetails });
+    
+            console.log(opportunityDetails);
+    
+            // Pass both student data and opportunity details to the template
+            render(res, 'studentModifyOpportunity', { student: studentData, opportunity: opportunityDetails });
         } catch (err) {
             res.status(500).send(err);
         }
     },
-
+    
     updateOpportunity: async (req, res) => {
         try {
-            // Get the opportunity ID from the route parameters.
-            const opportunityId = req.params.id;
-
-            // Parse the URL fragment identifier (everything after the # character).
-            const fragment = req.params[0];
-
-            // Check if the fragment matches the expected pattern, such as "updateOpportunity/{_id}".
-            const fragmentPattern = /^updateOpportunity\/(\w+)$/;
-            const match = fragmentPattern.exec(fragment);
-
-            if (match) {
-                // Extract the _id from the fragment.
-                const updatedOpportunityId = match[1];
-
-                if (opportunityId !== updatedOpportunityId) {
-                    return res.status(400).json({ error: 'Opportunity ID in the URL does not match the fragment.' });
-                }
-
-                // Update the opportunity based on the request body.
-                const updatedOpportunityData = {
-                    date: req.body.date,
-                    time: req.body.time,
-                    // Add other fields here if needed
-                };
-
-                // Update the opportunity in the database using the student model's updateById method.
-                const numUpdated = await studentModel.updateById(opportunityId, updatedOpportunityData);
-
-                if (numUpdated === 0) {
-                    return res.status(404).json({ error: 'Opportunity not found.' });
-                }
-
-                // Optionally, you can retrieve the updated opportunity from the database
-                const updatedOpportunity = await studentModel.findById(opportunityId);
-
-                // Assuming you have a render function and a studentMyOpportunity.mustache template
-                render(res, 'studentMyOpportunity', { opportunities: updatedOpportunity });
-            } else {
-                return res.status(400).json({ error: 'Invalid fragment format.' });
+            // Extract route parameters
+            const { user_id, id: opportunityId } = req.params;
+    
+            // Find the student in the studentsDB by user_id
+            let studentData = await studentModel.findByUserId(user_id);
+    
+            console.log("Student Data:", studentData);
+    
+            if (!opportunityId) {
+                return res.status(400).json({ error: 'OpportunityId is required.' });
             }
-        } catch (err) {
-            res.status(500).send(err);
+    
+            // Check if the student exists
+            if (!studentData) {
+                return res.status(404).json({ error: 'Student not found.' });
+            }
+    
+            // Check if the opportunity exists in the student's opportunities
+            const existingOpportunityIndex = studentData.opportunities.findIndex(
+                (opp) => opp._id.toString() === opportunityId
+            );
+    
+            if (existingOpportunityIndex === -1) {
+                return res.status(404).json({ error: 'Opportunity not found for the student.' });
+            }
+    
+            // Update the opportunity details
+            const updatedOpportunity = {
+                ...studentData.opportunities[existingOpportunityIndex],
+                ...req.body,
+            };
+    
+            // Replace the existing opportunity with the updated opportunity
+            studentData.opportunities[existingOpportunityIndex] = updatedOpportunity;
+    
+            // Update the student data in the database
+            try {
+                await studentModel.updateStudent(studentData._id, { opportunities: studentData.opportunities });
+    
+                // Fetch the updated opportunity data from the database
+                const updatedStudentData = await studentModel.findByUserId(user_id);
+                const updatedOpportunity = updatedStudentData.opportunities.find(opp => opp._id.toString() === opportunityId);
+    
+                res.status(200).json({ message: 'Opportunity updated successfully.', opportunity: updatedOpportunity });
+            } catch (error) {
+                console.error('Error updating student:', error);
+                res.status(500).json({ error: 'Internal server error.' });
+            }
+        } catch (error) {
+            console.error('Error in updateOpportunity:', error);
+            res.status(500).json({ error: 'Internal server error.' });
         }
     },
-
+    
     removeOpportunity: async (req, res) => {
         try {
             // Get the opportunity ID from the route parameter.

@@ -11,9 +11,12 @@ router.use(express.urlencoded({ extended: true }));
 // Define routes
 router.get('/', opportunityController.getOpportunities);
 
-// // Route to view opportunities
-// router.get('/myOpportunities', studentController.viewOpportunities);
-
+// Route to the dashboard with user ID parameter
+router.get('/user/:userId', (req, res) => {
+    const user_id = req.params.userId;
+    // Call the studentController.getDashboard function passing the user ID
+    studentController.getDashboard(user_id, res);
+  });
 
 router.get('/user/:user_id/addOpportunity/:id', studentController.addOpportunity);
 
@@ -21,12 +24,11 @@ router.get('/user/:user_id/addOpportunity/:id', studentController.addOpportunity
 
 router.get('/user/:user_id/viewOpportunity', studentController.viewOpportunities);
 
-router.get('/opportunityDetails/:id', studentController.opportunityDetails);
+router.get('/user/:user_id/opportunityDetails/:id', studentController.opportunityDetails);
 
 // Route to save modified opportunity
-router.put('/opportunityDetails/:id/*', studentController.updateOpportunity);
+router.post('/user/:user_id/opportunityDetails/:id', studentController.updateOpportunity);
 
-router.post('/opportunityDetails/:id/*', studentController.updateOpportunity);
 
 //router.delete('/viewOpportunity/removeOpportunity/:id', studentController.removeOpportunity);
 

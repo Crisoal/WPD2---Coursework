@@ -1,18 +1,21 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
 
+/* Resetting default styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Body styles */
 body {
-    font-family: 'Montserrat', sans-serif;
     overflow-x: hidden;
     background-color: #f5f5f5;
 }
 
+/* Header styles */
 header .navbar-expand-lg .navbar-collapse {
     display: block !important;
 }
@@ -23,23 +26,44 @@ header nav ul .nav-link {
 }
 
 header nav ul .nav-item {
+    font-family: 'Montserrat', sans-serif;
     margin-inline: 5px;
 }
 
+/* Modal content styles */
+.modal-content {
+    max-width: 700px !important;
+}
+
+/* Side label styles */
 .side-label {
     display: inline-block;
     margin-right: 20px; /* Adjust margin as needed */
 }
+
 .side-label label {
     font-weight: bold; /* To make the label bold */
     margin-right: 5px; /* Adjust margin between label and value */
 }
 
+/* Bordered value styles */
 .bordered-value {
-    border: 1px solid #ccc; /* Border style */
-    padding: 5px; /* Padding for the values */
+    border: 1px solid #ccc;
+    padding: 5px; 
     background-color: #f5f5f5; /* Light grey background color */
     display: inline-block; /* To keep values inline */
 }
 
+.bordered-value li {
+    list-style: none; 
+}
+
+/* Card styles */
+.card {
+    height: 30rem;
+    
+}
+.card-link{
+    text-decoration: none; 
+}
 

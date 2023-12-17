@@ -4,14 +4,28 @@ const Joi = require('joi');
 // Create a new instance of the datastore
 const studentsDB = new Datastore({ filename: 'C:/xampp/htdocs/WDT Coursework/WPD2---Coursework/backend/db/students.db', autoload: true });
 
+
 // Define the opportunity schema using Joi
-const opportunitySchema = Joi.object({
+const mentorAvailabilitySchema = Joi.object({
+  mentorName: Joi.string().required(),
+  recurringDays: Joi.array().items(Joi.string()).required(),
+  times: Joi.array().items(Joi.string()).required(),
+ });
+ 
+ const opportunitySchema = Joi.object({
   _id: Joi.string(),
-  title: Joi.string(),
-  description: Joi.string(),
-  date: Joi.date(),
-  time: Joi.string(),
-});
+  type: Joi.string().valid('opportunity').required(),
+  category_id: Joi.string().required(),
+  categoryName: Joi.string().required(),
+  title: Joi.string().required(),
+  description: Joi.string().required(),
+  mentorAvailability: Joi.array().items(mentorAvailabilitySchema).required(),
+  sessionDuration: Joi.string().required(),
+  image: Joi.string().required(),
+  obj: Joi.array().items(Joi.string()).required(),
+  duration: Joi.string().required(),
+ });
+ 
 
 // Define the schema for the students collection using Joi
 const studentSchema = Joi.object({

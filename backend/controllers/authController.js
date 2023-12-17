@@ -179,8 +179,8 @@ const authController = {
                         console.log('Logged in user role:', user.role);
 
                         if (user.role === 'student') {
-                            // Redirect students to their dashboard
-                            await studentController.getDashboard(req.user._id, res);
+                            const userId = req.user._id; // Assuming req.user._id contains the user ID
+                            res.redirect(`/students/user/${userId}`);
                         } else if (user.role === 'admin') {
                             // Redirect admins to their dashboard or appropriate section
                             // You might have an adminController to handle admin dashboard or actions
