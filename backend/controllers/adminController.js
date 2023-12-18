@@ -3,6 +3,7 @@ const passport = require('passport');
 const authController = require('../controllers/authController');
 
 
+
 // Define the admin controller.
 const adminController = {
   // Function to get the admin dashboard.
@@ -65,16 +66,18 @@ const adminController = {
   },
 
   // Function to delete a student record.
-  deleteStudentRecord: (req, res) => {
-    const id = req.params.id;
-    adminModel.delete(id, (err) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.redirect('/admins/dashboard');
-      }
-    });
-  },
+deleteStudentRecord: (req, res) => {
+  const id = req.params.user_id; // Use 'id' instead of 'user_id'
+  console.log(id);
+  adminModel.delete(id, (err) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.redirect('/admin/students');
+    }
+  });
+},
+
 
   // Function to get the mentors.
   getMentors: (req, res) => {
@@ -111,40 +114,40 @@ const adminController = {
     });
   },
 
-  // Function to get the coaching opportunities.
-  getOpportunities: (req, res) => {
-    adminModel.getAllOpportunities((err, admins) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.render('manageOpportunities', { oportunities: opportunities });
-      }
-    });
-  },
+  // // // Function to get the coaching opportunities.
+  // // getOpportunities: (req, res) => {
+  // //   opportunityModel.getAllOpportunities((err, admins) => {
+  // //     if (err) {
+  // //       res.status(500).send(err);
+  // //     } else {
+  // //       res.render('manageOpportunities', { oportunities: opportunities });
+  // //     }
+  // //   });
+  // // },
 
-  // Function to add a new coaching opportunity.
-  addOpportunity: (req, res) => {
-    const newOpportunity = req.body;
-    adminModel.add(newOpportunity, (err, admin) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.redirect('/admins/dashboard');
-      }
-    });
-  },
+  // // Function to add a new coaching opportunity.
+  // addOpportunity: (req, res) => {
+  //   const newOpportunity = req.body;
+  //   adminModel.add(newOpportunity, (err, admin) => {
+  //     if (err) {
+  //       res.status(500).send(err);
+  //     } else {
+  //       res.redirect('/admins/dashboard');
+  //     }
+  //   });
+  // },
 
-  // Function to delete a coaching opportunity.
-  deleteOpportunity: (req, res) => {
-    const id = req.params.id;
-    adminModel.delete(id, (err) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.redirect('/admins/dashboard');
-      }
-    });
-  }
+  // // Function to delete a coaching opportunity.
+  // deleteOpportunity: (req, res) => {
+  //   const id = req.params.id;
+  //   adminModel.delete(id, (err) => {
+  //     if (err) {
+  //       res.status(500).send(err);
+  //     } else {
+  //       res.redirect('/admins/dashboard');
+  //     }
+  //   });
+  // }
 };
 
 module.exports = adminController;

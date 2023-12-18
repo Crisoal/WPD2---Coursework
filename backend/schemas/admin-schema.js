@@ -6,16 +6,28 @@ const bcrypt = require('bcrypt');
 // Create a new instance of the datastore for admin
 const adminDB = new Datastore({ filename: 'C:/xampp/htdocs/WDT Coursework/WPD2---Coursework/backend/db/admins.db', autoload: true });
 
+// Define the opportunity schema using Joi
+const mentorAvailabilitySchema = Joi.object({
+    mentorName: Joi.string().required(),
+    recurringDays: Joi.array().items(Joi.string()).required(),
+    times: Joi.array().items(Joi.string()).required(),
+   });
+
 // Define the schema for opportunities using Joi
 const opportunitySchema = Joi.object({
     _id: Joi.string(),
+    type: Joi.string().valid('opportunity').required(),
+    category_id: Joi.string().required(),
+    categoryName: Joi.string().required(),
     title: Joi.string().required(),
     description: Joi.string().required(),
-    date: Joi.date().required(),
-    time: Joi.string().required(),
+    mentorAvailability: Joi.array().items(mentorAvailabilitySchema).required(),
+    sessionDuration: Joi.string().required(),
+    image: Joi.string().required(),
+    obj: Joi.array().items(Joi.string()).required(),
+    duration: Joi.string().required(),
 });
 
-// Define the schema for mentors using Joi
 const mentorSchema = Joi.object({
     _id: Joi.string(),
     user_id: Joi.string(),
@@ -24,9 +36,31 @@ const mentorSchema = Joi.object({
     fullName: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
+    // Additional fields specific to mentors
+    basicInfo: Joi.object({
+        address: Joi.string(),
+        phone: Joi.string().allow(''),
+        occupation: Joi.string().required(),
+        company: Joi.string().allow(''),
+        expertise: Joi.string().required(),
+        linkedin: Joi.string().uri(),
+    }),
+    experience: Joi.object({
+        years: Joi.number().integer().min(0),
+        skills: Joi.array().items(Joi.string()).required(),
+        certifications: Joi.array().items(Joi.string()),
+    }),
+    availability: Joi.array().items(
+        Joi.object({
+            day: Joi.string().valid('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday').required(),
+            times: Joi.array().items(Joi.string()).required(),
+        })
+    ),
+    bio: Joi.string().required(),
+    image: Joi.string().uri().required(),
     opportunities: Joi.array().items(opportunitySchema), // Include opportunities array
-    // Additional fields specific to mentors if needed
 });
+
 
 
 // Define the schema for students using Joi

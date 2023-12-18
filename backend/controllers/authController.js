@@ -205,8 +205,6 @@ const authController = {
 
     // Other functions...
 
-
-
     registerStudent: [
         async (req, res, next) => {
             try {

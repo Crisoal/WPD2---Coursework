@@ -40,7 +40,15 @@ const studentSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
   opportunities: Joi.array().items(opportunitySchema),
-});
+  picture: Joi.string(), // Add this line
+  previousGoals: Joi.array().items(Joi.object({
+   goal: Joi.string(),
+   startDate: Joi.string(),
+   endDate: Joi.string(),
+   description: Joi.string(),
+  })), 
+ });
+ 
 
 // Attach the schema to the students datastore
 studentsDB.ensureIndex({ fieldName: '_id', unique: true });

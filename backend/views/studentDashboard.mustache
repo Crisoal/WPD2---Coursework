@@ -19,8 +19,7 @@
               rel="stylesheet">
         <link href="/public/css/studentStyles.css" rel="stylesheet">
     </head>
-    <body
-   
+    <body>
         <header>
             <nav class="navbar navbar-expand-md">
                 <div class="container-fluid d-flex">
@@ -43,7 +42,9 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/students/user/{{user_id}}">Mentorship Opportunities</a>
+                                <a class="nav-link active"
+                                   aria-current="page"
+                                   href="/students/user/{{user_id}}">Mentorship Opportunities</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/students/user/{{user_id}}/viewOpportunity">My Opportunities</a>
@@ -54,22 +55,33 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/about">My Goals</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/contact">Profile</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle"
+                                   href="#"
+                                   id="navbarDropdown"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">Profile</a>
+                                <ul class="dropdown-menu dropdown-menu-end"
+                                    aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="/students/user/{{user_id}}/profile">My Profile</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/students/user/{{user_id}}/profile">Logout</a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </div>
                 </div>
             </nav>
         </header>
-        
         {{#student}}
         <div class="container">
-
             {{#categories}}
             <h4>{{name}}</h4>
             <div class="row">
-
                 {{#opportunities}}
                 <div class="col-md-3">
                     <a href="#"
@@ -103,7 +115,7 @@
                      role="dialog"
                      aria-labelledby="opportunityModalLabel"
                      aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-dialog modal-dialog-scrollable modal-lg">" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <a href="/mentors-profile">View Mentors' Profile</a>
@@ -171,7 +183,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </>
         </div>
         <!-- End Opportunity Modal -->
     {{/opportunities}}
@@ -179,7 +191,6 @@
 {{/categories}}
 </div>
 {{/student}}
-
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Bootstrap JS Bundle (includes Popper) -->

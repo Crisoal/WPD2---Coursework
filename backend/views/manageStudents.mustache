@@ -1,108 +1,158 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Dashboard</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-
-    <script src="https://kit.fontawesome.com/4eb0e146e9.js" crossorigin="anonymous"></script>
-
-    <link href="../public/css/styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+          crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/4eb0e146e9.js"
+            crossorigin="anonymous"></script>
+    <link href="/public/css/styles.css" rel="stylesheet">
   </head>
   <body>
-
-      <header>
-        <nav class="navbar navbar-expand-md justify-content-center">
-          <div class="container-fluid d-flex">
-              <a class="navbar-brand" href="/" target="_blank">
-                <img src="../public/images/Monochrome_Modern_Technology_Black_Logo-removebg-preview - Copy.png" alt="Logo" width="180" height="40" class="d-inline-block align-text-top">
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-      
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav ms-auto">
-                  <li class="nav-item">
-                      <a class="nav-link" href="/">Dashboard</a>
-                  </li>
-
-                  <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/admin/students">Students</a>
-                  </li>
-
-                   <li class="nav-item">
-                      <a class="nav-link" href="/admin/opportunities">Mentorship Opportunities</a>
-                  </li>
-
-                  <li class="nav-item">
-                    <a class="nav-link" href="/admin/mentors">Mentors</a>
-                  </li>
-
-                  <li class="nav-item">
-                      <a class="nav-link" href="/user/login">Login</a>
-                  </li>
-
-              </ul>
-            </div>
-
+    <header>
+      <nav class="navbar navbar-expand-md justify-content-center">
+        <div class="container-fluid d-flex">
+          <a class="navbar-brand" href="/" target="_blank">
+            <img src="/public/images/Monochrome_Modern_Technology_Black_Logo-removebg-preview - Copy.png"
+                 alt="Logo"
+                 width="180"
+                 height="40"
+                 class="d-inline-block align-text-top">
+          </a>
+          <button class="navbar-toggler"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarNav"
+                  aria-controls="navbarNav"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="/admin">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/admin/students">Students</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/opportunities">Mentorship Opportunities</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/mentors">Mentors</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/user/login">Login</a>
+              </li>
+            </ul>
           </div>
+        </div>
+      </nav>
+    </header>
+    <section class="container mt-4">
+      <h1>Manage Students</h1>
+      <!-- Link to Add Student page -->
+      <a href="/admin/students/add"
+         target="_blank"
+         class="btn btn-primary mt-3">Add a Student</a>
 
-        </nav>
+        
+      <!-- Table to display student records -->
+    <div class="table-responsive mt-4">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Loop through students data from the backend -->
+          {{#students}}
+          <tr>
+            <td>{{studentId}}</td>
+            <td>{{fullName}}</td>
+            <td>{{email}}</td>
+            <td>{{department}}</td>
+            <td>
+              <a href="#" class="icon" data-bs-toggle="modal" data-bs-target="#editModal{{_id}}" data-bs-student-id="{{_id}}">
+                <i class="fas fa-edit"></i> <!-- Edit Icon -->
+              </a>
+              <a href="#" class="icon" data-bs-toggle="modal" data-bs-target="#deleteModal{{_id}}">
+                <i class="fas fa-trash-alt"></i> <!-- Delete Icon -->
+              </a>
+            </td>
+          </tr>
+          {{/students}}
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-      </header>
-
-
-<section class="container mt-4">
-  <h1>Manage Students</h1>
-
-  <!-- Link to Add Student page -->
-  <a href="/admin/students/add" target="_blank" class="btn btn-primary mt-3">Add a Student</a>
-  
-  <!-- Table to display student records -->
-  <div class="table-responsive mt-4">
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Date Added</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Loop through students data from the backend -->
-        {{#students}}
-        <tr>
-          <td>{{studentId}}</td>
-          <td>{{fullName}}</td>
-          <td>{{email}}</td>
-          <td>{{date}}</td>
-          <td>{{status}}</td>
-          <td>
-            <a href="/admin/students/edit/{{id}}" class="icon">
-              <i class="fas fa-edit"></i> <!-- Edit Icon -->
-            </a>
-            <a href="/admin/students/delete/{{id}}" class="icon">
-              <i class="fas fa-trash-alt"></i> <!-- Delete Icon -->
-            </a>
-            <a href="/admin/students/block/{{id}}" class="icon">
-              <i class="fas fa-ban"></i> <!-- Block User Icon -->
-            </a>
-          </td>
-        </tr>
-        {{/students}}
-      </tbody>
-    </table>
+  {{#students}}
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editModal{{_id}}" tabindex="-1" aria-labelledby="editModalLabel{{_id}}" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel{{_id}}">Edit Student</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Form for editing student details goes here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <a href="/admin/student/{{_id}}/edit" class="btn btn-primary">Submit</a>
+        </div>
+      </div>
+    </div>
   </div>
-</section>
 
-      
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-  </body>
+  <!-- Delete Modal -->
+  <div class="modal fade" id="deleteModal{{_id}}" tabindex="-1" aria-labelledby="deleteModalLabel{{_id}}" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel{{_id}}">Delete Student</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this student?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <a href="/admin/student/{{_id}}/delete" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/students}}
+
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+          crossorigin="anonymous"></script>
+  <script>
+     var editModal = document.getElementById('editModal')
+     editModal.addEventListener('show.bs.modal', function (event) {
+       // Button that triggered the modal
+       var button = event.relatedTarget
+       // Extract info from data-bs-* attributes
+       var studentId = button.getAttribute('data-bs-student-id')
+       // Update the modal's content.
+       var modalBodyInput = editModal.querySelector('.modal-body input')
+       modalBodyInput.value = studentId
+     })
+  </script>
+</body>
 </html>

@@ -2,12 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mustacheExpress = require('mustache-express');
 const session = require('express-session');
+const expressListRoutes = require('express-list-routes');
 const passport = require('passport');
 const Datastore = require('nedb');
 const flash = require('connect-flash');
 const path = require('path');
 const methodOverride = require('method-override');
-// const studentController = require('./controllers/studentController');
 
 const app = express();
 
@@ -45,7 +45,6 @@ const contactRoutes = require('./routes/contactRoutes');
 const Opportunity = require('./routes/opportunity');
 
 
-
 // Use routes
 app.use('/students', studentRoutes);
 app.use('/admin', adminRoutes);
@@ -54,9 +53,21 @@ app.use('/contact', contactRoutes);
 app.use('/opportunities', Opportunity);
 app.use('/user', Routes);
 
+// //use express list routes
+// expressListRoutes(app);
 
-
-// app.delete('/students/removeOpportunity/:id', studentController.removeOpportunity);
+// app._router.stack.forEach(function(middleware){
+//   if(middleware.route){ // routes registered directly on the app
+//       console.log(middleware.route);
+//   } else if(middleware.name === 'router'){ // router middleware 
+//       middleware.handle.stack.forEach(function(handler){
+//           var route = handler.route;
+//           if (route) {
+//               console.log(route);
+//           }
+//       });
+//   }
+// });
 
 const dbPath = path.join(__dirname, 'db');
 const db = {

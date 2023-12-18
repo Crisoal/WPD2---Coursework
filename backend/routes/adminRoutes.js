@@ -2,7 +2,7 @@ const express = require('express');
 const adminController = require('../controllers/adminController');
 const studentsController = require('../controllers/studentController');
 const mentorsController = require('../controllers/mentorController');
-const opportunitiesController = require('../controllers/opportunityController');
+const opportunityController = require('../controllers/opportunityController');
 
 const router = express.Router();
 
@@ -19,11 +19,9 @@ router.get('/students/add', (req, res) => {
 
 router.post('/students/added', adminController.addStudentRecord);
 
+router.put('/student/:user_id/edit', adminController.modifyStudentRecord);
 
-router.put('/students/:id', adminController.modifyStudentRecord);
-
-router.delete('/students/:id', adminController.deleteStudentRecord);
-
+router.get('/student/:user_id/delete', adminController.deleteStudentRecord)
 // Mentors routes
 
 router.get('/mentors', adminController.getMentors);
@@ -38,11 +36,15 @@ router.delete('/mentors/:id', adminController.deleteMentor);
 
 // Opportunities routes
 
-router.get('/opportunities', adminController.getOpportunities);
+router.get('/opportunities', opportunityController.getOpportunities);
 
-router.post('/opportunities/add', adminController.addOpportunity);
+router.get('/opportunities/add', opportunityController.viewOpportunities);
 
-router.delete('/opportunities/:id', adminController.deleteOpportunity);
+router.post('/opportunities/add', opportunityController.addOpportunity);
+
+router.post('/opportunities/edit/:id', opportunityController.updateOpportunity);
+
+router.get('/opportunities/delete/:id', opportunityController.removeOpportunity);
 
 
 

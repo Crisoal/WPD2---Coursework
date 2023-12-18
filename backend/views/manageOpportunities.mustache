@@ -1,64 +1,262 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-     <meta name="description" content="Your description goes here.">
-        <meta name="keywords" content="keyword1, keyword2, keyword3">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta charset="utf-8">
+    <meta name="description" content="Your description goes here.">
+    <meta name="keywords" content="keyword1, keyword2, keyword3">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
     <title>Manage Opportunities</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-
-    <script src="https://kit.fontawesome.com/4eb0e146e9.js" crossorigin="anonymous"></script>
-
-    <link href="../public/css/styles.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/4eb0e146e9.js"
+            crossorigin="anonymous"></script>
+    <link href="/public/css/styles.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
-
-      <header>
-        <nav class="navbar navbar-expand-md justify-content-center">
-          <div class="container-fluid d-flex">
-              <a class="navbar-brand" href="/" target="_blank">
-                <img src="../public/images/Monochrome_Modern_Technology_Black_Logo-removebg-preview - Copy.png" alt="Logo" width="180" height="40" class="d-inline-block align-text-top">
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-      
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav ms-auto">
-                  <li class="nav-item">
-                      <a class="nav-link" href="/">Dashboard</a>
-                  </li>
-
-                  <li class="nav-item">
-                        <a class="nav-link" href="/admin/students">Students</a>
-                  </li>
-
-                   <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="/admin/opportunities">Mentorship Opportunities</a>
-                  </li>
-
-                  <li class="nav-item">
-                    <a class="nav-link" href="/admin/mentors">Mentors</a>
-                  </li>
-
-                  <li class="nav-item">
-                      <a class="nav-link" href="/user/login">Login</a>
-                  </li>
-
-              </ul>
-            </div>
-
+    <header>
+      <nav class="navbar navbar-expand-md justify-content-center">
+        <div class="container-fluid d-flex">
+          <a class="navbar-brand" href="/" target="_blank">
+            <img src="/public/images/Monochrome_Modern_Technology_Black_Logo-removebg-preview - Copy.png"
+                 alt="Logo"
+                 width="180"
+                 height="40"
+                 class="d-inline-block align-text-top">
+          </a>
+          <button class="navbar-toggler"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarNav"
+                  aria-controls="navbarNav"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="/admin">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/students">Students</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active"
+                   aria-current="page"
+                   href="/admin/opportunities">Mentorship Opportunities</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/mentors">Mentors</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/user/login">Login</a>
+              </li>
+            </ul>
           </div>
+        </div>
+      </nav>
+    </header>
+    <style>
+      .modal-dialog {
+          margin: auto;
+      }
+    </style>
+    <div class="container">
+      <div clas="row">
+        <!-- Link to Add Student page -->
+        <a href="/admin/opportunities/add"
+           target="_blank"
+           class="btn btn-primary mt-3">Add Opportunity</a>
+        <!-- Link to Add Student page -->
+        <a href="/admin/opportunities/add-category"
+           target="_blank"
+           class="btn btn-primary mt-3">Add Category</a>
+      </div>
+    </div>
+    <div id="categories">
+      <ul class="nav nav-tabs">
+        <!-- Category tabs -->
+        {{#categories}}
+        <li role="tab"
+            data-target="#{{category_id}}"
+            data-selected-class="active"
+            aria-controls="{{category_id}}"
+            aria-selected="false"
+            tabindex="-1">
+          <a href="#">{{name}}</a>
+        </li>
+      {{/categories}}
+    </ul>
+  </div>
+  <div class="tab-content">
+    {{#categories}}
+    <div role="tabpanel" class="tab-pane" id="{{category_id}}">
+      <div class="row">
+        {{#opportunities}}
+        <div class="col-md-4 mb-4">
+          <div class="card clickable"
+               data-bs-toggle="modal"
+               data-bs-target="#opportunityModal{{_id}}"
+               data-opportunity-id="{{_id}}">
+            <div class="card-body">
+              <img class="card-img-top"
+                   src="{{image}}"
+                   alt="Opportunity image"
+                   height="200"
+                   width="200">
+              <h5 class="card-title">{{title}}</h5>
+              <p class="card-text">{{description}}</p>
+            </div>
+            <div class="card-footer">
+              <a href="#"
+                 class="btn btn-primary"
+                 data-bs-toggle="modal"
+                 data-bs-target="#editModal{{_id}}">Edit</a>
+              <a href="#"
+                 class="btn btn-danger"
+                 data-bs-toggle="modal"
+                 data-bs-target="#deleteModal{{_id}}">Delete</a>
+            </div>
+          </div>
+        </div>
+        <!-- Opportunity Detail Modal -->
+        <div class="modal fade" id="opportunityModal{{_id}}">
+          <div class="modal-dialog modal-dialog-scrollable wide-modal">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Opportunity Details</h4>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <p>Title: {{title}}</p>
+                <p>Description: {{description}}</p>
+                <!-- Add more details as needed -->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Delete Modal -->
+        <div class="modal fade" id="deleteModal{{_id}}">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Delete Opportunity</h4>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">Are you sure you want to delete this opportunity?</div>
+              <div class="modal-footer">
+                <a href="#" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</a>
+                <a href="/admin/opportunities/delete/{{_id}}" class="btn btn-danger">Delete</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Edit Modal -->
+        <div class="modal fade" id="editModal{{_id}}">
+         <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Edit Opportunity</h4>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <form id="editOpportunityForm"
+                      action="/admin/opportunities/edit/{{_id}}"
+                      method="post">
+                  <div class="form-group">
+                    <label for="editTitle">Title</label>
+                    <input type="text"
+                           class="form-control"
+                           id="editTitle"
+                           value="{{title}}"
+                           placeholder="Title">
+                  </div>
+                  <div class="form-group">
+                    <label for="editCategory">Category</label>
+                    <select class="form-control" id="editCategory" name="category">
+                      {{#categories}}
+                      <option value="{{category_id}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+                    {{/categories}}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="editDescription">Description</label>
+                  <textarea class="form-control" id="editDescription" placeholder="Description">{{description}}</textarea>
+                </div>
+                
+              <div class="form-group">
+                <label for="editSessionDuration">Session Duration</label>
+                <input type="text"
+                       class="form-control"
+                       id="editSessionDuration"
+                       value="{{sessionDuration}}"
+                       placeholder="Session Duration">
+              </div>
+                              <div class="form-group">
+                <label for="editObjectives">Objectives</label>
+                <textarea class="form-control" id="editObjectives" placeholder="Objectives">{{#obj}}{{.}}{{/obj}}</textarea>
+                </div>
 
-        </nav>
+            <div class="form-group">
+              <label for="editImage">Replace Image</label>
+              <input type="file" class="form-control-file" id="editImage">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</a>
+          <button type="submit" form="editOpportunityForm" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/opportunities}}
+</div>
+</div>
+{{/categories}}
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  $(document).ready(function () {
 
-      </header>  
+    $('.tab-pane').first().addClass('active');
 
+    $('.nav-tabs li').click(function () {
+      var tabId = $(this).data('target');
+      $('.tab-pane').removeClass('active');
+      $(tabId).addClass('active');
+    });
+  });
+</script>
+<script>
+ document.addEventListener('DOMContentLoaded', function () {
+  var modals = document.querySelectorAll('.modal');
+  modals.forEach(function (modal) {
+    modal.addEventListener('hidden.bs.modal', function (event) {
+      document.body.classList.remove('modal-open');
+      var backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove();
+      }
+    });
+  });
+});
+</script>
+<script>
+    // Get the message from the server passed to the template
+    const message = "{{ message }}";
 
-      
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-  </body>
+    // Check if message exists and show an alert asynchronously after a delay
+    if (message) {
+        setTimeout(() => {
+            window.alert(message);
+        }, 0); // Delay of 0 milliseconds to run asynchronously
+    }
+</script>
+</body>
 </html>

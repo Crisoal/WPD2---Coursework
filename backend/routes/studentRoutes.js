@@ -20,8 +20,6 @@ router.get('/user/:userId', (req, res) => {
 
 router.get('/user/:user_id/addOpportunity/:id', studentController.addOpportunity);
 
-// router.post('/user/:user_id/schedule', studentController.scheduleOpportunity);
-
 router.get('/user/:user_id/viewOpportunity', studentController.viewOpportunities);
 
 router.get('/user/:user_id/opportunityDetails/:id', studentController.opportunityDetails);
@@ -30,9 +28,8 @@ router.get('/user/:user_id/opportunityDetails/:id', studentController.opportunit
 router.post('/user/:user_id/opportunityDetails/:id', studentController.updateOpportunity);
 
 
-//router.delete('/viewOpportunity/removeOpportunity/:id', studentController.removeOpportunity);
+router.post('/:user_id/removeOpportunity/:id', studentController.removeOpportunity);
 
-router.post('/viewOpportunity/removeOpportunity/:id', studentController.removeOpportunity);
-
+router.get('/user/:user_id/profile', studentController.viewProfile);
 
 module.exports = router;

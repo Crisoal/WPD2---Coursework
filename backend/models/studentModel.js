@@ -77,6 +77,8 @@ const studentModel = {
     return new Promise(async (resolve, reject) => {
       try {
         const numReplaced = await studentsDB.update({ _id: id }, { $set: updatedData }, {});
+        // After the update, reload the database to ensure the changes are visible
+        studentsDB.loadDatabase();
         resolve(numReplaced);
       } catch (error) {
         reject(error);
@@ -90,6 +92,8 @@ const studentModel = {
         if (err) {
           reject(err);
         } else {
+           // After the update, reload the database to ensure the changes are visible
+           studentsDB.loadDatabase();
           resolve(numReplaced);
         }
       });

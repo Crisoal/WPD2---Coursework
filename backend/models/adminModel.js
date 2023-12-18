@@ -1,9 +1,11 @@
 const { adminDB, validateAndInsert } = require('../schemas/admin-schema');
 
+
+
 // Define the admin model.
 const adminModel = {
-     // Function to get dashboard.
-     getAll: (callback) => {
+    // Function to get dashboard.
+    getAll: (callback) => {
         adminDB.find({}, callback);
     },
 
@@ -25,9 +27,9 @@ const adminModel = {
             throw err;
         }
     },
-    
-     // Function to get all mentors.
-     getAllMentors: (callback) => {
+
+    // Function to get all mentors.
+    getAllMentors: (callback) => {
         adminDB.find({ role: 'mentor' }, callback);
     },
 
@@ -42,8 +44,8 @@ const adminModel = {
             });
     },
 
-     // Function to get all opportunities.
-     getAllOpportunities: (callback) => {
+    // Function to get all opportunities.
+    getAllOpportunities: (callback) => {
         adminDB.find({}, (err, opportunities) => {
             if (err) {
                 callback(err);
@@ -69,10 +71,29 @@ const adminModel = {
         adminDB.update({ _id: id }, adminData, { multi: false }, callback);
     },
 
-    // Function to delete an admin.
-    delete: (id, callback) => {
-        adminDB.remove({ _id: id }, {}, callback);
-    }
+  // model.js
+delete: (id, callback) => {
+    console.log('Deleting student with id:', id);
+    adminDB.find({}, (err, docs) => {
+     if (err) {
+       callback(err);
+     } else {
+       console.log('All ids in the database:', docs.map(doc => doc._id));
+       adminDB.remove({ _id: id }, {}, (err, numRemoved) => {
+         console.log('Remove result:', numRemoved);
+         if (err) {
+           callback(err);
+         } else {
+           adminDB.persistence.compactDatafile();
+           callback(null, numRemoved);
+         }
+       });
+     }
+    });
+   }
+   
+   
+
 };
 
 module.exports = adminModel;
