@@ -69,6 +69,14 @@ app.use('/user', Routes);
 //   }
 // });
 
+
+
+// app.use((req, res, next) => {
+//   console.log('URL:', req.url);
+//   next();
+//  });
+ 
+
 const dbPath = path.join(__dirname, 'db');
 const db = {
   students: new Datastore({ filename: path.join(dbPath, 'students.db') }),

@@ -20,40 +20,53 @@ const opportunityController = {
 
     addOpportunity: async (req, res) => {
         try {
-            // Validate incoming data
-            if (!req.body || !req.body.title || !req.body.category_id) {
-                throw new Error('Title and category ID are required');
-            }
-     
+            // Extract form data from the request body
+            const { title, description, category_id, mentorAvailability, sessionDuration, image, obj, duration } = req.body;
+    
             // Check if the opportunity title already exists
-            const existingOpportunity = await opportunityModel.findOne({ title: req.body.title });
+            const existingOpportunity = await opportunityModel.findOne({ title });
             if (existingOpportunity) {
                 throw new Error('Opportunity with this title already exists');
             }
-     
-            // Create the new opportunity in the database using the provided data
-            const createdOpportunity = await opportunityModel.create(req.body);
-     
+    
+            // Create the new opportunity in the database using the validated data
+            const createdOpportunity = await opportunityModel.create({ 
+                type: 'opportunity',
+                category_id,
+                title,
+                description,
+                mentorAvailability: mentorAvailability.map(mentor => ({ 
+                    mentorName: mentor.mentorName,
+                    recurringDays: mentor.recurringDays,
+                    times: mentor.times,
+                })),
+                sessionDuration,
+                image,
+                obj,
+                duration,
+            });
+
+            console.log(createdOpportunity);
+    
             // Fetch categories after adding the opportunity
             const categories = await opportunityModel.find({ type: 'category' });
             const opportunities = await opportunityModel.find({ type: 'opportunity' });
-     
-            categories.forEach(category => {
-                category.opportunities = opportunities.filter(opportunity => opportunity.category_id === category.category_id);
+    
+            categories.forEach((category) => {
+                category.opportunities = opportunities.filter((opportunity) => opportunity.category_id === category.category_id);
             });
-
-            console.log(categories);
-     
+    
             // Render the manageOpportunity Mustache page after successful addition
             const message = 'Opportunity added successfully!';
             res.render('manageOpportunities', { categories, message }); // Pass both categories and the message as data to the template
-     
         } catch (err) {
-            res.status(500).send(err);
+            res.status(500).send(err.message || 'Internal Server Error');
         }
-     },
+    },
+    
+     
 
-     viewOpportunities: async (req, res) => {
+    viewOpportunities: async (req, res) => {
         try {
             // Fetch all categories
             const categories = await opportunityModel.find({ type: 'category' });
@@ -70,13 +83,12 @@ const opportunityController = {
             });
     
             // Render a page to display opportunities under each category
-            res.render('viewOpportunities', { categories, opportunities, categorizedOpportunities });
+            res.render('addOpportunity', { categories, opportunities, categorizedOpportunities });
     
         } catch (err) {
             res.status(500).send(err);
         }
     },
-    
      
     // Function to update an existing opportunity.
     updateOpportunity: async (req, res) => {

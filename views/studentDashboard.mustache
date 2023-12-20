@@ -115,7 +115,7 @@
                      role="dialog"
                      aria-labelledby="opportunityModalLabel"
                      aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable modal-lg">" role="document">
+                    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <a href="/mentors-profile">View Mentors' Profile</a>
@@ -191,43 +191,43 @@
 {{/categories}}
 </div>
 {{/student}}
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Bootstrap JS Bundle (includes Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Bootstrap Datepicker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-<!-- Bootstrap Timepicker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
-<!-- Your script block for initialization -->
-<script>
-$(document).ready(function() {
-   // Handle click event on card link
-   $('.card-link').on('click', function(e) {
-     e.preventDefault(); // Prevent the default action of the link
-     var targetModal = $(this).attr('data-target'); // Get the target modal ID from the link's data-target attribute
-     $(targetModal).modal('show'); // Show the corresponding modal
-   });
- });
+                <!-- jQuery -->
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <!-- Bootstrap JS Bundle (includes Popper) -->
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                <!-- Bootstrap Datepicker -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+                <!-- Bootstrap Timepicker -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
+                <!-- Your script block for initialization -->
+                <script>
+                $(document).ready(function() {
+                // Handle click event on card link
+                $('.card-link').on('click', function(e) {
+                    e.preventDefault(); // Prevent the default action of the link
+                    var targetModal = $(this).attr('data-target'); // Get the target modal ID from the link's data-target attribute
+                    $(targetModal).modal('show'); // Show the corresponding modal
+                });
+                });
 
 
-    $(document).ready(function() {
-        try {
-            $('#date').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                todayHighlight: true
-            });
+                    $(document).ready(function() {
+                        try {
+                            $('#date').datepicker({
+                                format: 'yyyy-mm-dd',
+                                autoclose: true,
+                                todayHighlight: true
+                            });
 
-            $('#time').timepicker({
-                minuteStep: 1,
-                showMeridian: false,
-                explicitMode: true
-            });
-        } catch (error) {
-            console.error('Initialization error:', error);
-        }
-    });
-</script>
+                            $('#time').timepicker({
+                                minuteStep: 1,
+                                showMeridian: false,
+                                explicitMode: true
+                            });
+                        } catch (error) {
+                            console.error('Initialization error:', error);
+                        }
+                    });
+                </script>
 </body>
 </html>
