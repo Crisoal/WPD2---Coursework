@@ -45,6 +45,11 @@ const contactRoutes = require('./routes/contactRoutes');
 const Opportunity = require('./routes/opportunity');
 
 
+// Route for /about
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'html', 'about.html'));
+});
+
 // Use routes
 app.use('/students', studentRoutes);
 app.use('/admin', adminRoutes);

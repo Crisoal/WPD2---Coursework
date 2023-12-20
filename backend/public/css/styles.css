@@ -27,7 +27,6 @@ header nav ul .nav-item {
     margin-inline: 5px;
 }
 
-
 /* CSS */
 .button-89 {
   --b: 3px;   /* border thickness */
@@ -326,11 +325,14 @@ footer{
     height: 50vh;
 }
 
+footer p{
+  font-size: 13px;
+}
 
 
 /* CSS */
 .button-52 {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 200;
   letter-spacing: 1px;
   padding: 13px 20px 13px;
@@ -342,6 +344,7 @@ footer{
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  color:#333333;
 }
 
 .button-52:after {
@@ -354,11 +357,13 @@ footer{
   top: 7px;
   left: 7px;
   transition: 0.2s;
+  
 }
 
-.button-52:hover:after {
+.button-52:hover{
   top: 0px;
   left: 0px;
+  background-color: coral;
 }
 
 #right-col p, a{
@@ -579,10 +584,11 @@ footer{
     position: relative;
   }
   
+  
 
 @media (min-width: 768px) {
   .button-52 {
-    padding: 13px 50px 13px;
+    padding: 10px 40px 10px;
   }
 }
 
@@ -621,10 +627,31 @@ footer{
     box-shadow: rgba(0, 0, 0, .3) 2px 8px 8px -5px;
     transform: translate3d(0, 2px, 0);
   }
+
+
   
   .button-55:focus {
     box-shadow: rgba(0, 0, 0, .3) 2px 8px 4px -6px;
   }
+
+  #success-story h5{
+    font-size: 14px;
+    font-weight: 600; 
+  }
+
+  #success-story h5 em{
+    color: coral;
+     font-size: 11px;
+     font-family: 'Raleway', sans-serif;
+  }
+
+  #social-icons a {
+     color: #333333;
+  }
+
+  #social-icons a:hover {
+    color: #3333339e;
+ }
 
 @media only screen and (max-width: 768px) {
     #cat .item .icon {
