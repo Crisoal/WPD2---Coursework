@@ -7,3 +7,43 @@
     box-sizing: border-box;
 }
 
+#about-image {
+    background-size: cover;
+    background-position: center;
+    height: 80vh;
+    min-width: 100%;
+}
+
+.container {
+    padding-left: 13%;
+    padding-right: 13%;
+}
+
+#text-spec,
+#text-du {
+    padding-bottom: 10px;
+}
+
+/* CSS for vertically centering text in columns */
+.row.vertical-center {
+    display: flex;
+    align-items: center;
+}
+
+/* CSS for the Vision section's background color */
+#vision {
+    background-color: #f0f0f0;
+    /* Replace with desired background color */
+    padding: 30px;
+}
+
+section{
+    margin-top: 15%;
+    margin-bottom: 15%;
+}
+
+#author{
+    font-size: 13px;
+    font-family: 'Raleway', sans-serif;
+    line-height: 2;
+}
