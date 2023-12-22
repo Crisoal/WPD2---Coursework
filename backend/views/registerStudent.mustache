@@ -1,143 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-     <meta name="description" content="Your description goes here.">
+    <head>
+        <meta name="description" content="Your description goes here.">
         <meta name="keywords" content="keyword1, keyword2, keyword3">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta charset="utf-8">
-    <title>Student Registration</title>
-
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-
-    <link href="/public/css/styles.css" rel="stylesheet">
-
-    <link href="/public/css/reg-login.css" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-md">
-          <div class="container-fluid d-flex">
-              <a class="navbar-brand" href="/">
-                <img src="../public/images/Monochrome_Modern_Technology_Black_Logo-removebg-preview - Copy.png" alt="Logo" width="180" height="40" class="d-inline-block align-text-top">
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-      
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav ms-auto">
-                  <li class="nav-item">
-                      <a class="nav-link" href="/">Home</a>
-                  </li>
-
-                  <li class="nav-item">
-                      <a class="nav-link" href="/opportunities">Mentorship Opportunities</a>
-                  </li>
-
-                  <li class="nav-item">
-                        <a class="nav-link" href="/about">About</a>
-                  </li>
-
-                  <li class="nav-item">
-                    <a class="nav-link" href="/contact">Contact</a>
-                  </li>
-
-                  <li class="nav-item">
-                      <a class="nav-link" href="/user/login">Login</a>
-                  </li>
-
-                  <li class="nav-item">
-                      <a class="nav-link active" href="/user/register-student" aria-current="page">Register</a>
-                  </li>
-
-                  <li class="nav-item">
-                      <a class="nav-link" href="/user/register-mentor">Apply as a Mentor</a>
-                  </li>
-      
-              </ul>
-            </div>
-
-          </div>
-
-        </nav>
-
-    </header>
-       
-     <div class="wrapper">
-        <div class="inner">
-                <form action="/user/student-register" method="post">
-                     <h3>Student Registration Form</h3>
-
-                  {{#error}}
-                        <div class="error-messages">
-                            <p>{{{.}}}</p>
-                        </div>
-                  {{/error}}
-
-                     <div class="form-group">
-                            <div class="form-wrapper">                                
-                                 <label for="fname">Full Name:</label>
-                                 <input type="text" id="fname" name="fname" class="form-control" required>
-                            </div>
- 
-                            <div class="form-wrapper">                                
-                                 <label for="username">Username:</label>
-                                 <input type="text" id="username" name="username" class="form-control" required>
-                            </div>
-                     </div>
-
-                    <div class="form-wrapper">
-                            <label for="studentId">Student ID:</label>
-                            <input type="text" id="studentId" name="studentId" pattern="[A-Za-z0-9]+" class="form-control" required>
+        <title>Student Registration</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+              crossorigin="anonymous">
+        <link href="/public/css/styles.css" rel="stylesheet">
+        <link href="/public/css/reg-login.css" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-md justify-content-center">
+                <div class="container-fluid d-flex">
+                    <a class="navbar-brand" href="/">
+                        <img src="/public/images/Monochrome_Modern_Technology_Black_Logo-removebg-preview - Copy.png"
+                             alt="Logo"
+                             width="180"
+                             height="40"
+                             class="d-inline-block align-text-top">
+                    </a>
+                    <button class="navbar-toggler"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#navbarNav"
+                            aria-controls="navbarNav"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/opportunities" target="_blank">Mentorship Opportunities</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/about" target="_blank">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/contact" target="_blank">Contact</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/user/login" target="_blank">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/user/register-student" target="_blank">Register</a>
+                            </li>
+                            {{! <li class="nav-item">
+                                <button class="button-89" role="button">
+                                    <a class="nav-link active"
+                                       style="padding: 4px;
+                                              font-size: 12px"
+                                       href="/user/register-mentor"
+                                       
+                                       target="_blank">Apply as a Mentor</a>
+                                </button>
+                            </li> }}
+                        </ul>
                     </div>
+                </div>
+            </nav>
+        </header>
+    
 
-                    <div class="form-wrapper">
-                            <label for="universityName" class="form-label">University/College Name:</label>
+   <section class="text-center text-lg-start">
+            <div class="row g-0 d-flex">
+                <div class="col-lg-7 col-12">
+                       <div class="container p-5">
+                            <form action="/user/student-register" method="post">
+                                        <h5 id="reg-log"> STUDENT REGISTRATION</h5>
 
-                            <select id="universityName" name="universityName" class="form-select" required>
-                            <option value="Glasgow Caledonian University" selected>Glasgow Caledonian University</option>
-                            <option value="African Leadership College">African Leadership College</option>
-                            </select>
-                    </div>
+                                            {{#error}}
+                                                    <div class="error-messages">
+                                                        <p>{{{.}}}</p>
+                                                    </div>
+                                            {{/error}}
 
-                    <div class="form-wrapper">
-                            <label for="academicDepartment" class="form-label">Academic Department/Major:</label>
-                                <select id="academicDepartment" name="department" class="form-select" required>
-                                    <option value="Computing" selected>Computing</option>
-                                    <option value="Engineering">Engineering</option>
-                                    <option value="Business Administration">Business Administration</option>
-                                    <option value="Social Science">Social Science</option>
-                                </select>
-                    </div>
-        
-                     <div class="form-wrapper">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" class="form-control" required>
-                    </div>
 
-                    <div class="form-wrapper">
-                            <label for="password">Password:</label>
-                            <input type="password" id="password" name="password" class="form-control" required>
-                    </div>
 
-                    <div class="form-wrapper">
-                            <label for="confirmPassword">Confirm Password:</label>
-                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
-                    </div>
 
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox"> I accept the Terms of Use & Privacy Policy.
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
-                
-                    <button type="submit">Register Now</button>
-                </form>
+<div class="form-group row">
+    <div class="col-sm-6"> <!-- Adjust the column size based on your layout -->
+        <div class="form-wrapper">                                
+            <label for="fname">Full Name:</label>
+            <input type="text" id="fname" name="fname" class="form-control" required>
         </div>
     </div>
+    <div class="col-sm-6"> <!-- Adjust the column size based on your layout -->
+        <div class="form-wrapper">                                
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" class="form-control" required>
+        </div>
+    </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+                                        <div class="form-wrapper">
+                                                <label for="studentId">Student ID:</label>
+                                                <input type="text" id="studentId" name="studentId" pattern="[A-Za-z0-9]+" class="form-control" required>
+                                        </div>
+
+                                        <div class="form-wrapper">
+                                                <label for="universityName" class="form-label">University/College Name:</label>
+
+                                                <select id="universityName" name="universityName" class="form-select" required>
+                                                <option value="Glasgow Caledonian University" selected>Glasgow Caledonian University</option>
+                                                <option value="African Leadership College">African Leadership College</option>
+                                                </select>
+                                        </div>
+
+                                        <div class="form-wrapper">
+                                                <label for="academicDepartment" class="form-label">Academic Department/Major:</label>
+                                                    <select id="academicDepartment" name="department" class="form-select" required>
+                                                        <option value="Computing" selected>Computing</option>
+                                                        <option value="Engineering">Engineering</option>
+                                                        <option value="Business Administration">Business Administration</option>
+                                                        <option value="Social Science">Social Science</option>
+                                                    </select>
+                                        </div>
+                            
+                                        <div class="form-wrapper">
+                                                <label for="email">Email:</label>
+                                                <input type="email" id="email" name="email" class="form-control" required>
+                                        </div>
+
+                                        <div class="form-wrapper">
+                                                <label for="password">Password:</label>
+                                                <input type="password" id="password" name="password" class="form-control" required>
+                                        </div>
+
+                                        <div class="form-wrapper">
+                                                <label for="confirmPassword">Confirm Password:</label>
+                                                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+                                        </div>
+
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> I accept the Terms of Use & Privacy Policy.
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    
+                                        <button type="submit"  class="btn btn-primary" id="btn-reg">Register Now</button>
+                            </form>
+                        
+                        </div>
+                </div>
+            
+            <div class="col-lg-5 col-12">
+               <img src="/public/images/mock interview/pexels-mizuno-k-12912109.jpg" alt="Trendy Pants and Shoes" class="w-100 img-reg" />
+
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"></script>
 </body>
 </html>

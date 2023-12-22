@@ -1,9 +1,19 @@
-const Datastore = require('nedb');
-
-// Initialize the database.
-const db = new Datastore({ filename: '../db/mentors.db', autoload: true, lock: true });
+const { mentorsDB, validateAndInsert } = require('../schemas/mentor-schema');
 
 const mentorModel = {
+
+    insert: (data) => {
+        return new Promise(async (resolve, reject) => {
+          try {
+            // Use the validation function to validate and insert data
+            const result = await validateAndInsert(data);
+            resolve(result);
+          } catch (error) {
+            reject(error);
+          }
+        });
+      },
+    
     // Function to get all mentors.
     getAll: (callback) => {
         db.find({}, callback);
@@ -18,6 +28,8 @@ const mentorModel = {
     add: (mentor, callback) => {
         db.insert(mentor, callback);
     },
+
+    
 
     // Function to update a mentor.
     update: (id, mentor, callback) => {

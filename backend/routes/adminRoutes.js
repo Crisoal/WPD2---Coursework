@@ -19,7 +19,7 @@ router.get('/students/add', (req, res) => {
 
 router.post('/students/added', adminController.addStudentRecord);
 
-router.put('/student/:user_id/edit', adminController.modifyStudentRecord);
+router.put('/student/:_id/edit', adminController.updateStudent);
 
 router.get('/student/:user_id/delete', adminController.deleteStudentRecord)
 // Mentors routes
@@ -38,9 +38,13 @@ router.delete('/mentors/:id', adminController.deleteMentor);
 
 router.get('/opportunities', opportunityController.getOpportunities);
 
-router.get('/opportunities/add', opportunityController.viewOpportunities);
+router.get('/opportunities/view', opportunityController.viewOpportunities);
 
-router.post('/opportunities/add', opportunityController.addOpportunity);
+router.post('/opportunities/add', (req, res, next) => {
+    console.log(req.body); // Logging the request body before calling the controller
+    opportunityController.addOpportunity(req, res, next);
+});
+
 
 router.post('/opportunities/edit/:id', opportunityController.updateOpportunity);
 

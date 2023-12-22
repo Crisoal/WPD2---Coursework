@@ -13,6 +13,18 @@
   </head>
   <body>
 
+  <style>
+  .btn-primary{
+    background-color: #333;
+    border: 1px solid #333;
+    margin-top: 25px;
+  }
+
+   .btn-primary:hover{
+      background-color: coral;
+   }
+  </style>
+
       <header>
         <nav class="navbar navbar-expand-md justify-content-center">
           <div class="container-fluid d-flex">
@@ -43,7 +55,7 @@
                   </li>
 
                   <li class="nav-item">
-                      <a class="nav-link" href="/user/login">Profile</a>
+                      <a class="nav-link" href="/user/login">Logout</a>
                   </li>
 
               </ul>
@@ -61,7 +73,7 @@
   <div class="row mt-4">
     <div class="col-md-4">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" style="height: 200px;">
           <h5 class="card-title">Manage Students</h5>
           <p class="card-text">View, add, modify, and delete student records.</p>
           <a href="/admin/students" class="btn btn-primary">Go to Students</a>
@@ -71,7 +83,7 @@
     
     <div class="col-md-4">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" style="height: 200px";>
           <h5 class="card-title">Manage Mentors</h5>
           <p class="card-text">View, add, modify, and delete mentor data.</p>
           <a href="/admin/mentors" class="btn btn-primary">Go to Mentors</a>
@@ -81,10 +93,10 @@
     
     <div class="col-md-4">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" style="height: 200px;">
           <h5 class="card-title">Manage Opportunities</h5>
           <p class="card-text">View, add, modify, and delete mentoring opportunities.</p>
-          <a href="/admin/opportunities" class="btn btn-primary">Go to Opportunities</a>
+          <a href="/admin/opportunities" class="btn btn-primary" style="margin-top: 0;">Go to Opportunities</a>
         </div>
       </div>
     </div>

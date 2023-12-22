@@ -29,7 +29,7 @@ const opportunityModel = {
 
     create: (data) => {
         return new Promise((resolve, reject) => {
-            db.create(data, (err, newOpportunity) => {
+            db.insert(data, (err, newOpportunity) => {
                 if (err) {
                     reject(err);
                 } else {

@@ -9,7 +9,9 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
-     <script src="https://kit.fontawesome.com/4eb0e146e9.js" crossorigin="anonymous"></script>
+     <script src="https://kit.fontawesome.com/4eb0e146e9.js" crossorigin="anonymous"></script>x
+     <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="../public/css/opportunity.css" rel="stylesheet">
   </head>
   <body>
@@ -18,7 +20,7 @@
         <nav class="navbar navbar-expand-md">
           <div class="container-fluid d-flex">
               <a class="navbar-brand" href="/">
-                <img src="../public/images/Monochrome_Modern_Technology_Black_Logo-removebg-preview - Copy.png" alt="Logo" width="180" height="40" class="d-inline-block align-text-top">
+                <img src="/public/images/Monochrome_Modern_Technology_Black_Logo-removebg-preview - Copy.png" alt="Logo" width="180" height="40" class="d-inline-block align-text-top">
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,73 +66,233 @@
 
       </header>
 
-<div class="container">
-    <ul class="nav nav-tabs" id="categoryTabs">
-        {{#student}}
-            {{#categories}}
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="{{_id}}-tab" data-bs-toggle="tab" href="#{{_id}}" role="tab" aria-controls="{{_id}}" aria-selected="true">{{name}}</a>
-                </li>
-            {{/categories}}
-        {{/student}}
-    </ul>
 
-    <div class="tab-content" id="categoryContent">
-        {{#student}}
-            {{#categories}}
-                <div class="tab-pane fade" id="{{_id}}" role="tabpanel" aria-labelledby="{{_id}}-tab">
-                    <div class="row">
-                        {{#opportunities}}
-                            <div class="col-md-4">
-                                <div class="card" data-opportunity-id="{{_id}}">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{title}}</h5>
-                                        <p class="card-text">{{description}}</p>
-                                    </div>
-                                </div>
+        <div class="container">
+            <div id="categories">
+                <button class="category-tab active" data-category-id="all">All Categories</button>
+                {{#categories}}
+                <button class="category-tab" data-category-id="{{category_id}}">{{name}}</button>
+            {{/categories}}
+        </div>
+    </div>
+    <div class="container">
+        <div id="opportunities">
+            <div class="opportunity-list" data-category-id="all">
+                {{#categories}}
+                <div class="row">
+                    {{#opportunities}}
+                    <div class="col-md-3">
+<div class="card mt-5" data-toggle="modal" data-target="#opportunityModal" data-opportunity='{"title": "{{title}}", "description": "{{description}}", "categoryName": "{{categoryName}}", "image": "{{image}}", "obj": "{{obj}}", "duration": "{{duration}}", "sessionDuration": "{{sessionDuration}}"}'>
+                            <img class="card-img-top"
+                                 src="{{image}}"
+                                 alt="Card image cap"
+                                 height="200"
+                                 width="200">
+                            <div class="card-body">
+                                <h5 class="card-title">{{title}}</h5>
+                                <p class="card-text mt-2">CATEGORY</p>
+                                <p class="card-text">
+                                    <small class="text" id="catName">{{categoryName}}</small>
+                                </p>
+                                <p class="card-text mt-2">DESCRIPTION</p>
+                                <p class="card-text">
+                                    <small class="text">{{description}}</small>
+                                </p>
                             </div>
-                            <!-- Opportunity Modal -->
-                            <div class="modal fade" id="opportunityModal{{_id}}" tabindex="-1" role="dialog" aria-labelledby="opportunityModalLabel{{_id}}" aria-hidden="true">
-                                <!-- Your modal content -->
-                            </div>
-                            <!-- End Opportunity Modal -->
-                        {{/opportunities}}
+                        </div>
+                    </div>
+                {{/opportunities}}
+            </div>
+        {{/categories}}
+    </div>
+    {{#categories}}
+    <div class="opportunity-list" data-category-id="{{category_id}}">
+        <div class="row">
+            {{#opportunities}}
+            <div class="col-md-3">
+                <div class="card mt-5" data-toggle="modal" data-target="#opportunityModal">
+                    <img class="card-img-top"
+                         src="{{image}}"
+                         alt="Card image cap"
+                         height="200"
+                         width="200">
+                    <div class="card-body">
+                        <h5 class="card-title">{{title}}</h5>
+                        <p class="card-text mt-2">CATEGORY</p>
+                        <p class="card-text">
+                            <small class="text" id="catName">{{categoryName}}</small>
+                        </p>
+                        <p class="card-text mt-2">DESCRIPTION</p>
+                        <p class="card-text">
+                            <small class="text">{{description}}</small>
+                        </p>
                     </div>
                 </div>
-            {{/categories}}
-        {{/student}}
+            </div>
+        {{/opportunities}}
     </div>
 </div>
+{{/categories}}
+</div>
+</div>
+</div>
+{{#categories}}
+{{#opportunities}}
+<!-- Bootstrap Modal -->
+<div class="modal fade"
+     id="opportunityModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="opportunityModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="opportunityModalLabel">Opportunity Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <label>Opportunity Title</label>
+                    <h6 class="modal-title" id="opportunityModalLabel">{{title}}</h6>
+                    <hr>
+                    <div class="side-label">
+                        <label>Category</label>
+                        <p class="bordered-value">{{categoryName}}</p>
+                    </div>
+                    <div class="side-label">
+                        <label>Opportunity Image</label>
+                        <img src="{{image}}" height="100" width="100" alt="opportunity-image">
+                    </div>
+                    <div class="side-label">
+                        <label>Description</label>
+                        <p class="bordered-value">{{description}}</p>
+                    </div>
+                    <div class="side-label">
+                        <label>Mentorship Objectives</label>
+                        <ul class="bordered-value">
+                            {{#obj}}
+                            <li>{{.}}</li>
+                        {{/obj}}
+                    </ul>
+                </div>
+                <div class="side-label">
+                    <label>Duration</label>
+                    <p class="bordered-value">{{duration}}</p>
+                    <label>Session Duration</label>
+                    <p class="bordered-value">{{sessionDuration}}</p>
+                </div>
+                <form action="/students/user/{{user_id}}/opportunityDetails/{{_id}}"
+                      method="post">
+                    <label for="mentorSelect">Select a mentor:</label>
+                    <select id="mentorSelect" name="mentorSelect">
+                        {{#mentorAvailability}}
+                        <option value="{{mentorName}}">{{mentorName}}</option>
+                    {{/mentorAvailability}}
+                </select>
+                <div class="mb-3">
+                    <label for="datepicker" class="form-label">Select a date:</label>
+                    <input type="text" id="datepicker" name="datepicker" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="timepicker" class="form-label">Select a time:</label>
+                    <input type="text" id="timepicker" name="timepicker" class="form-control">
+                </div>
+                <div class="side-label">
+                    <label>Schedule a Meeting</label>
+                    <button type="submit" class="schedule-button">Schedule</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="/students/user/{{user_id}}/addOpportunity/{{_id}}"
+           class="btn bt n-primary">Add Opportunity</a>
+    </div>
+</div>
+</div>
+</div>
+{{/opportunities}}
+{{/categories}}
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<!-- Include the Mustache.js library and your JavaScript file here -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const categoryTabs = new bootstrap.Tab(document.getElementById('categoryTabs'));
+      window.onload = function() {
+          var categoryTabs = document.querySelectorAll('.category-tab');
+          var opportunityLists = document.querySelectorAll('.opportunity-list');
+          var opportunities = document.querySelectorAll('.card');
 
-        categoryTabs.show(); // Show the first tab by default
+          categoryTabs.forEach(function(tab) {
+   tab.addEventListener('click', function() {
+       var categoryId = this.getAttribute('data-category-id');
 
-        const cards = document.querySelectorAll(".card");
+       // Remove the 'active' class from all tabs
+       categoryTabs.forEach(function(tab) {
+           tab.classList.remove('active');
+       });
 
-        cards.forEach(function(card) {
-            card.addEventListener("click", function() {
-                const opportunityId = this.getAttribute("data-opportunity-id");
-                const modal = document.querySelector(`#opportunityModal${opportunityId}`);
-                const bootstrapModal = new bootstrap.Modal(modal);
+       // Add the 'active' class to the clicked tab
+       this.classList.add('active');
 
-                // Close Button
-                const closeButton = modal.querySelector(".close");
-                closeButton.addEventListener("click", function() {
-                    bootstrapModal.hide(); // Close the modal
-                });
+       // Hide all opportunity lists
+       opportunityLists.forEach(function(list) {
+           list.style.display = 'none';
+       });
 
-                bootstrapModal.show();
-            });
+       // Display the clicked category's opportunity list
+       var listToShow = document.querySelector('.opportunity-list[data-category-id="'+categoryId+'"]');
+       listToShow.style.display = 'block';
+   });
+});
+
+
+          // Display the "All Categories" opportunity list by default
+          var allCategoriesList = document.querySelector('.opportunity-list[data-category-id="all"]');
+          allCategoriesList.style.display = 'block';
+
+          // Add a click event listener to the opportunity cards
+          opportunities.forEach(function(opportunity) {
+              opportunity.addEventListener('click', function() {
+                var title = this.querySelector('.card-title').innerText;
+                var description = this.querySelector('.card-text').innerText;
+
+                // Insert opportunity details into the modal
+                var modalTitle = document.querySelector('#opportunityModalLabel');
+
+                var modalBody = document.querySelector('#opportunityModal .modal-body');
+
+                modalTitle.innerText = title;
+                modalBody.innerHTML = description;
+
+                // Show the modal
+                $('#opportunityModal').modal('show');
+              });
+          });
+      };
+
+    
+    $(document).ready(function() {
+        // Initialize the dropdown toggle
+        $('.dropdown-toggle').dropdown();
+
+        // Initialize datepicker
+        $('#datepicker').datepicker({
+            format: 'yyyy-mm-dd' // Set your desired date format
+        });
+
+        // Initialize timepicker
+        $('#timepicker').timepicker({
+            showMeridian: false // Set true/false based on your needs for AM/PM
         });
     });
+
 </script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
-  </body>
+</body>
 </html>

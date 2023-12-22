@@ -52,8 +52,8 @@ const studentSchema = Joi.object({
 
 // Attach the schema to the students datastore
 studentsDB.ensureIndex({ fieldName: '_id', unique: true });
-studentsDB.ensureIndex({ fieldName: 'email', unique: true });
-studentsDB.ensureIndex({ fieldName: 'username', unique: true });
+// studentsDB.ensureIndex({ fieldName: 'email', unique: true });
+// studentsDB.ensureIndex({ fieldName: 'username', unique: true });
 
 const validateAndInsert = (data) => {
   return new Promise(async (resolve, reject) => {

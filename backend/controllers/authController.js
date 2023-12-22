@@ -119,30 +119,54 @@ passport.use('local-mentor', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true,
-}, async (req, email, password, done) => {
+ }, async (req, email, password, done) => {
     try {
         const existingUser = await User.findByEmail(email);
-
+ 
         if (existingUser) {
             return done(null, false, { message: 'Email already in use.' });
         }
-
+ 
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+ 
         const newUser = {
             username: req.body.username,
             email: email,
-            password: password,
+            password: hashedPassword, // Store the hashed password
             role: 'mentor',
+            fullName: req.body.fullName,
+            basicInfo: {
+                occupation: req.body.occupation,
+                expertise: req.body.expertise,
+            },
+            experience:{
+                years: req.body.yearsExperience,
+                skills: req.body.skills.split(',') 
+            },
+            bio: req.body.bio,
+            image: req.body.image,
         };
+ 
+        const insertedUser = await User.insert(newUser);
 
-        await User.insert(newUser);
-        await mentorModel.insert(newUser);
+        await mentorModel.insert({
+            ...newUser,
+            user_id: insertedUser._id,
+        });
 
+        await adminModel.addMentor({
+            ...newUser,
+            user_id: insertedUser._id,
+        });
+ 
         return done(null, newUser);
     } catch (error) {
         console.error(error);
         return done(error);
     }
-}));
+ }));
+ 
 
 const authController = {
     // Inside the login controller:
@@ -188,7 +212,8 @@ const authController = {
                         } else if (user.role === 'mentor') {
                             // Redirect mentors to their dashboard or appropriate section
                             // You might have a mentorController to handle mentor dashboard or actions
-                            res.redirect('/mentors');
+                            const userId = req.user._id; 
+                            res.redirect(`/mentors/user/${userId}`);
                         } else {
                             req.flash('error', 'Unauthorized role');
                             return res.redirect('/user/login');
@@ -202,8 +227,6 @@ const authController = {
             }
         }
     ],
-
-    // Other functions...
 
     registerStudent: [
         async (req, res, next) => {
@@ -276,14 +299,73 @@ const authController = {
         }
     ],
 
-    registerMentor: (req, res, next) => {
-        passport.authenticate('local-mentor', {
-            successRedirect: '/user/login',
-            failureRedirect: '/user/register-mentor',
-            failureFlash: true
-        })(req, res, next);
-    },
-
+    registerMentor: [
+        async (req, res, next) => {
+            try {
+                const { fullName, username, email, occupation, expertise, yearsExperience, skills, bio, password, confirmPassword } = req.body;
+                const errors = [];
+      
+                // Check if username already exists
+                const existingUser = await User.findByUsernameOrEmail(username);
+                if (existingUser) {
+                    errors.push('Username already exists');
+                }
+      
+                // Check if email already exists
+                const existingEmailUser = await User.findByUsernameOrEmail(email);
+                if (existingEmailUser) {
+                    errors.push('Email already exists. <a href="/user/login">Log in</a>');
+                }
+      
+                // Perform your own validation checks
+                if (!fullName) {
+                    errors.push('Full name is required');
+                }
+                if (!username) {
+                    errors.push('Username is required');
+                }
+                if (!email || !isValidEmail(email)) {
+                    errors.push('Invalid email');
+                }
+                if (password.length < 8) {
+                    errors.push('Password must contain at least 8 characters');
+                }
+                if (!password.match(/[A-Z]/)) {
+                    errors.push('Password must contain at least an uppercase letter');
+                }
+                if (!password.match(/[a-z]/)) {
+                    errors.push('Password must contain at least a lowercase letter');
+                }
+                if (!password.match(/\d/)) {
+                    errors.push('Password must contain at least a number');
+                }
+                if (!password.match(/[!@#$%^&*(),.?":{}|<>]/)) {
+                    errors.push('Password must contain at least a special character');
+                }
+                if (password !== confirmPassword) {
+                    errors.push('Passwords do not match');
+                }
+      
+                if (errors.length > 0) {
+                    // Store errors in req.flash or another storage mechanism
+                    req.flash('error', errors);
+                    return res.redirect('/user/login');
+                }
+      
+                // If validation passes, proceed with passport authentication
+                passport.authenticate('local-mentor', {
+                    successRedirect: '/user/login',
+                    failureRedirect: '/user/register-mentor',
+                    failureFlash: true
+                })(req, res, next);
+            } catch (error) {
+                console.error(error);
+                // Handle the error appropriately
+                // Redirect or show an error page
+            }
+        }
+      ],
+      
     logout: (req, res) => {
         req.logout();
         res.redirect('/user/login');

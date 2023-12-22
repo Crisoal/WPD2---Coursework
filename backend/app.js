@@ -11,6 +11,9 @@ const methodOverride = require('method-override');
 
 const app = express();
 
+require('dotenv').config();
+
+
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', path.join(__dirname, 'views'));
@@ -58,21 +61,21 @@ app.use('/contact', contactRoutes);
 app.use('/opportunities', Opportunity);
 app.use('/user', Routes);
 
-// //use express list routes
-// expressListRoutes(app);
+//use express list routes
+expressListRoutes(app);
 
-// app._router.stack.forEach(function(middleware){
-//   if(middleware.route){ // routes registered directly on the app
-//       console.log(middleware.route);
-//   } else if(middleware.name === 'router'){ // router middleware 
-//       middleware.handle.stack.forEach(function(handler){
-//           var route = handler.route;
-//           if (route) {
-//               console.log(route);
-//           }
-//       });
-//   }
-// });
+app._router.stack.forEach(function(middleware){
+  if(middleware.route){ // routes registered directly on the app
+      console.log(middleware.route);
+  } else if(middleware.name === 'router'){ // router middleware 
+      middleware.handle.stack.forEach(function(handler){
+          var route = handler.route;
+          if (route) {
+              console.log(route);
+          }
+      });
+  }
+});
 
 
 

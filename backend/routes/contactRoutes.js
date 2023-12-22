@@ -1,18 +1,20 @@
 const express = require('express');
-const path = require('path');
-const router = express.Router();
-const contactController = require('../controllers/contactController'); // Import the contactController module
+const { body } = require('express-validator');
+const { handleContactFormSubmission } = require('../controllers/contactController');
 
-// Define the route for /contact
+const router = express.Router();
+
 router.get('/', (req, res) => {
- // Get the absolute path to the contact.html file within the html folder
- const filePath = path.join(__dirname, '../public/html/contact.html');
- 
- // Send the contact.html file as the response
- res.sendFile(filePath);
+  // Render the contact.html file using express.static middleware
+  res.sendFile('contact.html', { root: 'public/html' });
 });
 
-// Define the route for /contact/message
-router.post('/message', contactController.handleContactFormSubmission); // Use the handleContactFormSubmission method as the route handler
+const validateContactForm = [
+  body('name').trim().isLength({ min: 1 }).withMessage('Name is required'),
+  body('email').trim().isEmail().withMessage('Valid email is required'),
+  body('message').trim().isLength({ min: 1 }).withMessage('Message is required'),
+];
+
+router.post('/message', validateContactForm, handleContactFormSubmission);
 
 module.exports = router;

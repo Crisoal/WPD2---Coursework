@@ -55,14 +55,14 @@ const mentorSchema = Joi.object({
         })
     ),
     bio: Joi.string().required(),
-    image: Joi.string().uri().required(),
+    image: Joi.string().required(),
     opportunities: Joi.array().items(opportunitySchema)
 });
 
 // Attach the schema to the mentors datastore
 mentorsDB.ensureIndex({ fieldName: '_id', unique: true });
-mentorsDB.ensureIndex({ fieldName: 'email', unique: true });
-mentorsDB.ensureIndex({ fieldName: 'username', unique: true });
+// mentorsDB.ensureIndex({ fieldName: 'email', unique: true });
+// mentorsDB.ensureIndex({ fieldName: 'username', unique: true });
 
 const validateAndInsert = (data) => {
     return new Promise(async (resolve, reject) => {

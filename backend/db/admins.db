@@ -1,5 +1,2 @@
-{"username":"bayo","email":"p.bayo@gmail.com","password":"$2b$10$13MvNarCOCRTFM.mNXFWAOOe.jptyzOsc9.whdVuH8qhB2KwarpFW","role":"student","fullName":"Peter","studentId":"7890","university":"Glasgow Caledonian University","department":"Computing","user_id":"VIW8UjjBOlrgI06B","_id":"G8JAPKjV4A5Mg9S0"}
-{"role":"admin","username":"admin","fullName":"Christiana Ola","email":"admin@gmail.com","password":"$2b$10$W6jgX7UMqYXLSTBLv5EzF.etbkCS0Tjqg93CVJrD2mPo51b4FSL/u","_id":"TNJW4vvhqmPDzh3Z"}
-{"username":"jewel","email":"b.tom@alustudent.com","password":"$2b$10$WqJTc5zY3zy.chRFUXYTy.MsNGNOF7.tmek2r5tZl02cyu3mATlya","role":"student","fullName":"Barry Tom","studentId":"E903456","university":"Glasgow Caledonian University","department":"Business Administration","user_id":"sZ2RAygloMS6lk2X","_id":"s7rmCWmcFW4ArwPp"}
-{"$$indexCreated":{"fieldName":"email","unique":true,"sparse":false}}
-{"$$indexCreated":{"fieldName":"username","unique":true,"sparse":false}}
+{"username":"Rhoda","email":"rhoda.past@alustudent.com","password":"thersas567@","role":"student","fullName":"Tolani Rhoda","studentId":"D78890","university":"African Leadership College","department":"Business Administration","user_id":"uKOlCCK5l8g16Rrz","_id":"6NrQH5FDWsNPrVmb"}
+{"role":"admin","username":"admin","fullName":"Christiana Ola","email":"admin@gmail.com","password":"$2b$10$LCnnpfX1RRJWBy2dHqFXVebqyhiAaiqtq3/3yyKsye/EAN2mgX33G","_id":"IerY1sa7vkA8AThj"}

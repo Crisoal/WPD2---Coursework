@@ -139,7 +139,8 @@ const studentController = {
                 // Update the student data in the database
                 try {
                     await studentModel.updateStudent(studentData._id, { opportunities: studentData.opportunities });
-                    res.status(200).json({ message: 'Opportunity added successfully.' });
+                    res.render('studentDashboard', { student: studentData, categories: studentData.opportunities, mentorAvailabilityMap: {}, user_id: studentData.query.user_id });
+
                 } catch (error) {
                     console.error('Error updating student:', error);
                     res.status(500).json({ error: 'Internal server error.' });
@@ -152,6 +153,55 @@ const studentController = {
             res.status(500).json({ error: 'Internal server error.' });
         }
     },
+
+    // editOpportunity: async (req, res) => {
+    //     try {
+    //         const { user_id, opportunity_id } = req.params;
+    //         const studentData = await studentModel.findByUserId(user_id);
+    
+    //         if (!opportunity_id) {
+    //             return res.status(400).json({ error: 'Opportunity ID is required.' });
+    //         }
+    
+    //         const opportunityIndex = studentData.opportunities.findIndex(
+    //             (opp) => opp._id.toString() === opportunity_id
+    //         );
+    
+    //         if (opportunityIndex === -1) {
+    //             return res.status(404).json({ error: 'Opportunity not found.' });
+    //         }
+    
+    //         const opportunityToUpdate = studentData.opportunities[opportunityIndex];
+    //         const updatedOpportunityData = {
+    //             category_id: req.body.category_id || opportunityToUpdate.category_id,
+    //             categoryName: req.body.categoryName || opportunityToUpdate.categoryName,
+    //             title: req.body.title || opportunityToUpdate.title,
+    //             description: req.body.description || opportunityToUpdate.description,
+    //             mentorAvailability: req.body.mentorAvailability || opportunityToUpdate.mentorAvailability,
+    //             sessionDuration: req.body.sessionDuration || opportunityToUpdate.sessionDuration,
+    //             image: req.body.image || opportunityToUpdate.image,
+    //             obj: req.body.obj || opportunityToUpdate.obj,
+    //             duration: req.body.duration || opportunityToUpdate.duration,
+    //         };
+    
+    //         studentData.opportunities[opportunityIndex] = updatedOpportunityData;
+    
+    //         try {
+    //             await studentModel.updateStudent(studentData._id, { opportunities: studentData.opportunities });
+    //             req.flash('success', 'Opportunity updated successfully.');
+    //             res.redirect(`/user/${user_id}/viewOpportunity`);
+    //         } catch (error) {
+    //             console.error('Error updating student:', error);
+    //             req.flash('error', 'Internal server error.');
+    //             res.redirect('/some_page');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error in editOpportunity:', error);
+    //         req.flash('error', 'Internal server error.');
+    //         res.redirect('/some_page');
+    //     }
+    // },
+    
 
     viewOpportunities: async (req, res) => {
         try {
@@ -208,6 +258,9 @@ const studentController = {
                 image: opportunity.image,
                 obj: opportunity.obj,
                 duration: opportunity.duration,
+                datepicker: opportunity.datepicker,
+                timepicker: opportunity.timepicker,
+                mentorSelect: opportunity.mentorSelect,
             };
 
             console.log(opportunityDetails);
@@ -223,48 +276,45 @@ const studentController = {
         try {
             // Extract route parameters
             const { user_id, id: opportunityId } = req.params;
-
+    
             // Find the student in the studentsDB by user_id
             let studentData = await studentModel.findByUserId(user_id);
-
+    
             console.log("Student Data:", studentData);
-
+    
             if (!opportunityId) {
                 return res.status(400).json({ error: 'OpportunityId is required.' });
             }
-
+    
             // Check if the student exists
             if (!studentData) {
                 return res.status(404).json({ error: 'Student not found.' });
             }
-
+    
             // Check if the opportunity exists in the student's opportunities
             const existingOpportunityIndex = studentData.opportunities.findIndex(
                 (opp) => opp._id.toString() === opportunityId
             );
-
+    
             if (existingOpportunityIndex === -1) {
                 return res.status(404).json({ error: 'Opportunity not found for the student.' });
             }
-
+    
             // Update the opportunity details
             const updatedOpportunity = {
                 ...studentData.opportunities[existingOpportunityIndex],
                 ...req.body,
             };
-
+    
             // Replace the existing opportunity with the updated opportunity
             studentData.opportunities[existingOpportunityIndex] = updatedOpportunity;
-
+    
             // Update the student data in the database
             try {
                 await studentModel.updateStudent(studentData._id, { opportunities: studentData.opportunities });
-
-                // Fetch the updated opportunity data from the database
-                const updatedStudentData = await studentModel.findByUserId(user_id);
-                const updatedOpportunity = updatedStudentData.opportunities.find(opp => opp._id.toString() === opportunityId);
-
-                res.status(200).json({ message: 'Opportunity updated successfully.', opportunity: updatedOpportunity });
+    
+                // Redirect to the desired URL after successful update
+                res.redirect(`/students/user/${user_id}/opportunityDetails/${opportunityId}`);
             } catch (error) {
                 console.error('Error updating student:', error);
                 res.status(500).json({ error: 'Internal server error.' });
@@ -274,6 +324,7 @@ const studentController = {
             res.status(500).json({ error: 'Internal server error.' });
         }
     },
+    
 
     removeOpportunity: async (req, res) => {
         try {

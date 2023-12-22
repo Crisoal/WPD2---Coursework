@@ -37,13 +37,110 @@
     padding: 30px;
 }
 
-section{
+section {
     margin-top: 15%;
     margin-bottom: 15%;
 }
 
-#author{
+#author {
     font-size: 13px;
     font-family: 'Raleway', sans-serif;
     line-height: 2;
 }
+
+#contact-con {
+    padding-left: 0;
+    padding-right: 0;
+
+    .btn-custom {
+        background-color: transparent;
+        color: #333;
+        transition: background-color 0.3s ease;
+        /* Smooth transition */
+        border-color: #333;
+        font-size: 13px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .btn-custom:hover {
+        background-color: #FF725E;
+        /* Coral color on hover */
+    }
+}
+
+#contact-con #col1,
+#col2 {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+#contact-con #col1 label {
+    font-size: 13px;
+}
+
+#query {
+    padding: 20px;
+}
+
+#query #col1 {
+    padding-left: 4%;
+}
+
+#query #col1 p {
+    font-family: 'Raleway', sans-serif;
+    font-size: 13px;
+    padding-top: 10px;
+}
+
+#query #col2 {
+    font-family: 'Raleway', sans-serif;
+    font-size: 13px;
+}
+
+#query #col2 p {
+    padding-top: 35px;
+}
+
+#query #col2 a {
+    color: coral;
+}
+
+#query #col2 a:hover {
+    color: #333333b8;
+}
+/* CSS for the round boxes */
+.info-box {
+    margin-top: 20px;
+  }
+  
+  .info-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .round-box {
+    border: 1px solid #000; /* Adjust border properties as needed */
+    border-radius: 20px; /* Adjust border radius for the round shape */
+    padding: 7px;
+    font-size: 13px;
+    background-color: transparent; /* Transparent background */
+  }
+
+  .round-box p{
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+  
+  /* CSS for responsive layout */
+  @media (max-width: 768px) {
+    .info-box {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .info-box .round-box {
+      margin-top: 10px;
+    }
+  }
+  

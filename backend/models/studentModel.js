@@ -73,19 +73,45 @@ const studentModel = {
     });
   },
 
-  updateStudent: async (id, updatedData) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const numReplaced = await studentsDB.update({ _id: id }, { $set: updatedData }, {});
-        // After the update, reload the database to ensure the changes are visible
-        studentsDB.loadDatabase();
-        resolve(numReplaced);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  },
+  // updateStudent: async (id, updatedData) => {
+  //   return new Promise(async (resolve, reject) => {
+  //     try {
+  //       const numReplaced = await studentsDB.update({ _id: id }, { $set: updatedData }, {});
+  //       // After the update, reload the database to ensure the changes are visible
+  //       studentsDB.loadDatabase();
+  //       resolve(numReplaced);
+  //     } catch (error) {
+  //       reject(error);
+  //     }
+  //   });
+  // },
+  updateStudent: async (studentId, updatedFields) => {
+    try {
+      const updatedStudent = await new Promise((resolve, reject) => {
+        studentsDB.update({ _id: studentId }, { $set: updatedFields }, {}, (err, numAffected) => {
+          if (err) {
+            reject(err);
+          } else {
+            if (numAffected > 0) {
+              studentsDB.findOne({ _id: studentId }, (err, student) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve(student);
+                }
+              });
+            } else {
+              reject(new Error('No student found with the given ID.'));
+            }
+          }
+        });
+      });
 
+      return updatedStudent; // Return the updated student data
+    } catch (error) {
+      throw new Error(`Error updating student: ${error.message}`);
+    }
+  },
   updateById: (id, updatedData) => {
     return new Promise((resolve, reject) => {
       studentsDB.update({ _id: id }, { $set: updatedData }, {}, (err, numReplaced) => {

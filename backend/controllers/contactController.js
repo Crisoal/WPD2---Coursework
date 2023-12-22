@@ -1,40 +1,39 @@
 const nodemailer = require('nodemailer');
+const { validationResult } = require('express-validator');
 
-// Configure the email transport
 const transporter = nodemailer.createTransport({
- service: 'gmail',
- auth: {
-   user: 'your-email@gmail.com',
-   pass: 'your-password'
- }
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
 });
 
-// Handle the form submission
-const handleContactFormSubmission = (req, res) => {
- const name = req.body.name;
- const email = req.body.email;
- const message = req.body.message;
+const handleContactFormSubmission = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
- // Construct the email message
- const mailOptions = {
-   from: email,
-   to: 'your-email@gmail.com',
-   subject: `Contact form submission from ${name}`,
-   text: message
- };
+    const { name, email, message } = req.body;
 
- // Send the email
- transporter.sendMail(mailOptions, (error, info) => {
-   if (error) {
-     console.log(error);
-     res.status(500).send('An error occurred while sending the email.');
-   } else {
-     console.log('Email sent: ' + info.response);
-     res.send('Message received');
-   }
- });
+    const mailOptions = {
+      from: email,
+      to: 'your-email@gmail.com',
+      subject: `Contact form submission from ${name}`,
+      text: message,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent: ' + info.response);
+    res.send('Message received');
+  } catch (error) {
+    console.error('Error occurred while sending email:', error);
+    res.status(500).send('An error occurred while sending the email.');
+  }
 };
 
 module.exports = {
- handleContactFormSubmission
+  handleContactFormSubmission,
 };

@@ -47,19 +47,45 @@
                 <a class="nav-link" href="/admin/mentors">Mentors</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/user/login">Login</a>
+                <a class="nav-link" href="/user/logout">Logout</a>
               </li>
             </ul>
           </div>
         </div>
       </nav>
     </header>
+
+    <style>
+  .custom-add-button {
+    background-color: coral;
+    border: 1px solid coral;
+    color: white;
+  }
+
+  .custom-add-button:hover {
+    background-color: transparent;
+    color: coral;
+    border: 1px solid coral;
+  }
+
+  .fa-edit:before, .fa-pen-to-square:before, .fa-trash-alt:before, .fa-trash-can:before{
+    color: #333;
+  }
+</style>
+
      <section class="container mt-4">
        <h1>Manage Students</h1>
-       <!-- Link to Add Student page -->
-       <a href="/admin/students/add" target="_blank" class="btn btn-primary mt-3">Add a Student</a>
+         <!-- Link to Add Student page at the top -->
+  <div class="row mb-3">
+    <div class="col text-end">
+      <a href="/admin/students/add" target="_blank" class="btn btn-primary custom-add-button">Add a Student</a>
+    </div>
+  </div>
 
-       <!-- Table to display student records -->
+     <!-- Table to display student records -->
+  <div class="row">
+    <div class="col">
+      <!-- Table to display student records -->
        <div class="table-responsive mt-4">
            <table class="table table-bordered">
                <thead>
@@ -96,27 +122,63 @@
                </tbody>
            </table>
        </div>
+    </div>
+  </div>
+       
    </section>
 
   {{#students}}
   <!-- Edit Modal -->
-  <div class="modal fade" id="editModal{{_id}}" tabindex="-1" aria-labelledby="editModalLabel{{_id}}" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel{{_id}}">Edit Student</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Form for editing student details goes here -->
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <a href="/admin/student/{{_id}}/edit" class="btn btn-primary">Submit</a>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Edit Modal -->
+<div class="modal fade" id="editModal{{_id}}" tabindex="-1" aria-labelledby="editModalLabel{{_id}}" aria-hidden="true">
+ <div class="modal-dialog modal-lg">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h5 class="modal-title" id="editModalLabel{{_id}}">Edit Student</h5>
+       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+     </div>
+
+
+     <div class="modal-body">
+     <form id="editStudentForm{{_id}}" action="/admin/student/{{_id}}/edit?_method=PUT" method="post">
+         <div class="mb-3">
+           <label for="username{{_id}}" class="col-form-label">Username:</label>
+           <input type="text" class="form-control" id="username{{_id}}" value="{{username}}"  name="username">
+         </div>
+         <div class="mb-3">
+           <label for="fullName{{_id}}" class="col-form-label">Full Name:</label>
+           <input type="text" class="form-control" id="fullName{{_id}}" value="{{fullName}}"  name="fullName">
+         </div>
+         <div class="mb-3">
+           <label for="studentId{{_id}}" class="col-form-label">Student ID:</label>
+           <input type="text" class="form-control" id="studentId{{_id}}" value="{{studentId}}"  name="studentId">
+         </div>
+         <div class="mb-3">
+           <label for="university{{_id}}" class="col-form-label">University:</label>
+           <input type="text" class="form-control" id="university{{_id}}" value="{{university}}"  name="university">
+         </div>
+         <div class="mb-3">
+           <label for="department{{_id}}" class="col-form-label">Department:</label>
+           <input type="text" class="form-control" id="department{{_id}}" value="{{department}}"  name="department">
+         </div>
+         <div class="mb-3">
+           <label for="email{{_id}}" class="col-form-label">Email:</label>
+           <input type="email" class="form-control" id="email{{_id}}" value="{{email}}" name="email">
+         </div>
+         <div class="mb-3">
+           <label for="password{{_id}}" class="col-form-label">Password:</label>
+           <input type="password" class="form-control" id="password{{_id}}" value="{{password}}"  name="password">
+         </div>
+       </form>
+     </div>
+     <div class="modal-footer">
+       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+       <button type="submit" form="editStudentForm{{_id}}" class="btn btn-primary">Save Changes</button>
+     </div>
+   </div>
+ </div>
+</div>
+
 
   <!-- Delete Modal -->
   <div class="modal fade" id="deleteModal{{_id}}" tabindex="-1" aria-labelledby="deleteModalLabel{{_id}}" aria-hidden="true">

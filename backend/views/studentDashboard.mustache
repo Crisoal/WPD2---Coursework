@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -11,13 +13,14 @@
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
               rel="stylesheet">
-        <!-- Bootstrap Datepicker CSS -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
-              rel="stylesheet">
-        <!-- Bootstrap Timepicker CSS -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css"
-              rel="stylesheet">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
         <link href="/public/css/studentStyles.css" rel="stylesheet">
+        <link href="/public/css/styles.css" rel="stylesheet">
     </head>
     <body>
         <header>
@@ -47,13 +50,10 @@
                                    href="/students/user/{{user_id}}">Mentorship Opportunities</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/students/user/{{user_id}}/viewOpportunity">My Opportunities</a>
+                                <a class="nav-link"  href="/students/user/{{user_id}}/viewOpportunity">My Opportunities</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/about">Find a Mentor</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/about">My Goals</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle"
@@ -68,7 +68,7 @@
                                         <a class="dropdown-item" href="/students/user/{{user_id}}/profile">My Profile</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="/students/user/{{user_id}}/profile">Logout</a>
+                                        <a class="dropdown-item" href="/user/{{user_id}}/logout">Logout</a>
                                     </li>
                                 </ul>
                             </li>
@@ -77,18 +77,23 @@
                 </div>
             </nav>
         </header>
-        {{#student}}
+        <hr style="border-top: 4px solid rgba(0,0,0,.4);">
         <div class="container">
-            {{#categories}}
-            <h4>{{name}}</h4>
-            <div class="row">
-                {{#opportunities}}
-                <div class="col-md-3">
-                    <a href="#"
-                       class="card-link"
-                       data-toggle="modal"
-                       data-target="#opportunityModal{{_id}}">
-                        <div class="card mt-5 ml-3 mr-3" data-opportunity-id="{{_id}}">
+            <div id="categories">
+                <button class="category-tab active" data-category-id="all">All Categories</button>
+                {{#categories}}
+                <button class="category-tab" data-category-id="{{category_id}}">{{name}}</button>
+            {{/categories}}
+        </div>
+    </div>
+    <div class="container">
+        <div id="opportunities">
+            <div class="opportunity-list" data-category-id="all">
+                {{#categories}}
+                <div class="row">
+                    {{#opportunities}}
+                    <div class="col-md-3">
+<div class="card mt-5" data-toggle="modal" data-target="#opportunityModal" data-opportunity='{"title": "{{title}}", "description": "{{description}}", "categoryName": "{{categoryName}}", "image": "{{image}}", "obj": "{{obj}}", "duration": "{{duration}}", "sessionDuration": "{{sessionDuration}}"}'>
                             <img class="card-img-top"
                                  src="{{image}}"
                                  alt="Card image cap"
@@ -98,7 +103,7 @@
                                 <h5 class="card-title">{{title}}</h5>
                                 <p class="card-text mt-2">CATEGORY</p>
                                 <p class="card-text">
-                                    <small class="text">{{categoryName}}</small>
+                                    <small class="text" id="catName">{{categoryName}}</small>
                                 </p>
                                 <p class="card-text mt-2">DESCRIPTION</p>
                                 <p class="card-text">
@@ -106,128 +111,199 @@
                                 </p>
                             </div>
                         </div>
-                    </a>
-                </div>
-                <!-- Opportunity Modal -->
-                <div class="modal fade"
-                     id="opportunityModal{{_id}}"
-                     tabindex="-1"
-                     role="dialog"
-                     aria-labelledby="opportunityModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <a href="/mentors-profile">View Mentors' Profile</a>
-                                <button type="button"
-                                        class="close"
-                                        data-bs-dismiss="modal"
-                                        aria-label="Close">
-                                    <span aria-hidden="true">x</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="container">
-                                    <label>Opportunity Title</label>
-                                    <h6 class="modal-title" id="opportunityModalLabel{{_id}}">{{title}}</h6>
-                                    <hr>
-                                    <div class="side-label">
-                                        <label>Category</label>
-                                        <p class="bordered-value">{{categoryName}}</p>
-                                    </div>
-                                    <div class="side-label">
-                                        <label>Opportunity Image</label>
-                                        <img src="{{image}}" height="100" width="100" alt="opportunity-image">
-                                    </div>
-                                    <div class="side-label">
-                                        <label>Description</label>
-                                        <p class="bordered-value">{{description}}</p>
-                                    </div>
-                                    <div class="side-label">
-                                        <label>Mentorship Objectives</label>
-                                        <ul class="bordered-value">
-                                            {{#obj}}
-                                            <li>{{.}}</li>
-                                        {{/obj}}
-                                    </ul>
-                                </div>
-                                <div class="side-label">
-                                    <label>Duration</label>
-                                    <p class="bordered-value">{{duration}}</p>
-                                    <label>Session Duration</label>
-                                    <p class="bordered-value">{{sessionDuration}}</p>
-                                </div>
-                                <form action="/students/user/{{user_id}}/opportunityDetails/{{_id}}"
-                                      method="post">
-                                    <label for="mentorSelect">Select a mentor:</label>
-                                    <select id="mentorSelect" name="mentorSelect">
-                                        {{#mentorAvailability}}
-                                        <option value="{{mentorName}}">{{mentorName}}</option>
-                                    {{/mentorAvailability}}
-                                </select>
-                                <div class="mb-3">
-                                    <label for="datepicker" class="form-label">Select a date:</label>
-                                    <input type="text" id="datepicker" name="datepicker" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="timepicker" class="form-label">Select a time:</label>
-                                    <input type="text" id="timepicker" name="timepicker" class="form-control">
-                                </div>
-                                <div class="side-label">
-                                    <label>Schedule a Meeting</label>
-                                    <button type="submit" class="schedule-button">Schedule</button>
-                                </div>
-                            </form>
-                            <a href="/students/user/{{user_id}}/addOpportunity/{{_id}}"
-                               class="btn btn-primary">Add Opportunity</a>
-                        </div>
+                    </div>
+                {{/opportunities}}
+            </div>
+        {{/categories}}
+    </div>
+    {{#categories}}
+    <div class="opportunity-list" data-category-id="{{category_id}}">
+        <div class="row">
+            {{#opportunities}}
+            <div class="col-md-3">
+                <div class="card mt-5" data-toggle="modal" data-target="#opportunityModal">
+                    <img class="card-img-top"
+                         src="{{image}}"
+                         alt="Card image cap"
+                         height="200"
+                         width="200">
+                    <div class="card-body">
+                        <h5 class="card-title">{{title}}</h5>
+                        <p class="card-text mt-2">CATEGORY</p>
+                        <p class="card-text">
+                            <small class="text" id="catName">{{categoryName}}</small>
+                        </p>
+                        <p class="card-text mt-2">DESCRIPTION</p>
+                        <p class="card-text">
+                            <small class="text">{{description}}</small>
+                        </p>
                     </div>
                 </div>
-            </>
-        </div>
-        <!-- End Opportunity Modal -->
-    {{/opportunities}}
+            </div>
+        {{/opportunities}}
+    </div>
 </div>
 {{/categories}}
 </div>
-{{/student}}
-                <!-- jQuery -->
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <!-- Bootstrap JS Bundle (includes Popper) -->
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-                <!-- Bootstrap Datepicker -->
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-                <!-- Bootstrap Timepicker -->
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
-                <!-- Your script block for initialization -->
-                <script>
-                $(document).ready(function() {
-                // Handle click event on card link
-                $('.card-link').on('click', function(e) {
-                    e.preventDefault(); // Prevent the default action of the link
-                    var targetModal = $(this).attr('data-target'); // Get the target modal ID from the link's data-target attribute
-                    $(targetModal).modal('show'); // Show the corresponding modal
-                });
-                });
+</div>
+</div>
+{{#categories}}
+{{#opportunities}}
+<!-- Bootstrap Modal -->
+<div class="modal fade"
+     id="opportunityModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="opportunityModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="opportunityModalLabel">Opportunity Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <label>Opportunity Title</label>
+                    <h6 class="modal-title" id="opportunityModalLabel">{{title}}</h6>
+                    <hr>
+                    <div class="side-label">
+                        <label>Category</label>
+                        <p class="bordered-value">{{categoryName}}</p>
+                    </div>
+                    <div class="side-label">
+                        <label>Opportunity Image</label>
+                        <img src="{{image}}" height="100" width="100" alt="opportunity-image">
+                    </div>
+                    <div class="side-label">
+                        <label>Description</label>
+                        <p class="bordered-value">{{description}}</p>
+                    </div>
+                    <div class="side-label">
+                        <label>Mentorship Objectives</label>
+                        <ul class="bordered-value">
+                            {{#obj}}
+                            <li>{{.}}</li>
+                        {{/obj}}
+                    </ul>
+                </div>
+                <div class="side-label">
+                    <label>Duration</label>
+                    <p class="bordered-value">{{duration}}</p>
+                    <label>Session Duration</label>
+                    <p class="bordered-value">{{sessionDuration}}</p>
+                </div>
+                <form action="/students/user/{{user_id}}/opportunityDetails/{{_id}}"
+                      method="post">
+                    <label for="mentorSelect">Select a mentor:</label>
+                    <select id="mentorSelect" name="mentorSelect">
+                        {{#mentorAvailability}}
+                        <option value="{{mentorName}}">{{mentorName}}</option>
+                    {{/mentorAvailability}}
+                </select>
+                <div class="mb-3">
+                    <label for="datepicker" class="form-label">Select a date:</label>
+                    <input type="text" id="datepicker" name="datepicker" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="timepicker" class="form-label">Select a time:</label>
+                    <input type="text" id="timepicker" name="timepicker" class="form-control">
+                </div>
+                <div class="side-label">
+                    <label>Schedule a Meeting</label>
+                    <button type="submit" class="schedule-button">Schedule</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="/students/user/{{user_id}}/addOpportunity/{{_id}}"
+           class="btn bt n-primary">Add Opportunity</a>
+    </div>
+</div>
+</div>
+</div>
+{{/opportunities}}
+{{/categories}}
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<!-- Include the Mustache.js library and your JavaScript file here -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
 
 
-                    $(document).ready(function() {
-                        try {
-                            $('#date').datepicker({
-                                format: 'yyyy-mm-dd',
-                                autoclose: true,
-                                todayHighlight: true
-                            });
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+      window.onload = function() {
+          var categoryTabs = document.querySelectorAll('.category-tab');
+          var opportunityLists = document.querySelectorAll('.opportunity-list');
+          var opportunities = document.querySelectorAll('.card');
 
-                            $('#time').timepicker({
-                                minuteStep: 1,
-                                showMeridian: false,
-                                explicitMode: true
-                            });
-                        } catch (error) {
-                            console.error('Initialization error:', error);
-                        }
-                    });
-                </script>
+          categoryTabs.forEach(function(tab) {
+   tab.addEventListener('click', function() {
+       var categoryId = this.getAttribute('data-category-id');
+
+       // Remove the 'active' class from all tabs
+       categoryTabs.forEach(function(tab) {
+           tab.classList.remove('active');
+       });
+
+       // Add the 'active' class to the clicked tab
+       this.classList.add('active');
+
+       // Hide all opportunity lists
+       opportunityLists.forEach(function(list) {
+           list.style.display = 'none';
+       });
+
+       // Display the clicked category's opportunity list
+       var listToShow = document.querySelector('.opportunity-list[data-category-id="'+categoryId+'"]');
+       listToShow.style.display = 'block';
+   });
+});
+
+
+          // Display the "All Categories" opportunity list by default
+          var allCategoriesList = document.querySelector('.opportunity-list[data-category-id="all"]');
+          allCategoriesList.style.display = 'block';
+
+          // Add a click event listener to the opportunity cards
+          opportunities.forEach(function(opportunity) {
+              opportunity.addEventListener('click', function() {
+                var title = this.querySelector('.card-title').innerText;
+                var description = this.querySelector('.card-text').innerText;
+
+                // Insert opportunity details into the modal
+                var modalTitle = document.querySelector('#opportunityModalLabel');
+
+                var modalBody = document.querySelector('#opportunityModal .modal-body');
+
+                modalTitle.innerText = title;
+                modalBody.innerHTML = description;
+
+                // Show the modal
+                $('#opportunityModal').modal('show');
+              });
+          });
+      };
+
+    
+    $(document).ready(function() {
+        // Initialize the dropdown toggle
+        $('.dropdown-toggle').dropdown();
+
+        // Initialize datepicker
+        $('#datepicker').datepicker({
+            format: 'yyyy-mm-dd' // Set your desired date format
+        });
+
+        // Initialize timepicker
+        $('#timepicker').timepicker({
+            showMeridian: false // Set true/false based on your needs for AM/PM
+        });
+    });
+
+</script>
 </body>
 </html>

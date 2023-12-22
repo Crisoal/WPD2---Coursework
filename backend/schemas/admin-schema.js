@@ -57,7 +57,7 @@ const mentorSchema = Joi.object({
         })
     ),
     bio: Joi.string().required(),
-    image: Joi.string().uri().required(),
+    image: Joi.string().required(),
     opportunities: Joi.array().items(opportunitySchema), // Include opportunities array
 });
 
@@ -113,8 +113,8 @@ const studentSchema = Joi.object({
 
 // Attach the schemas to the admin database
 adminDB.ensureIndex({ fieldName: '_id', unique: true });
-adminDB.ensureIndex({ fieldName: 'email', unique: true });
-adminDB.ensureIndex({ fieldName: 'username', unique: true });
+// adminDB.ensureIndex({ fieldName: 'email', unique: true });
+// adminDB.ensureIndex({ fieldName: 'username', unique: true });
 
 const validateAndInsert = (collection, data) => {
     return new Promise(async (resolve, reject) => {
